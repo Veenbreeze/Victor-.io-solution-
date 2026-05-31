@@ -30,7 +30,7 @@ export default function Home() {
             <p className="mb-4 inline-flex rounded-md border border-brand-400/40 bg-brand-400/10 px-4 py-2 text-sm font-bold text-brand-100">
               Full stack systems, design, tutoring, and digital growth
             </p>
-            <h1 className="max-w-4xl text-5xl font-black tracking-normal sm:text-7xl">VEENBREEZE SOLUTIONS</h1>
+            <h1 className="max-w-4xl text-5xl font-black tracking-normal sm:text-7xl">VICTOR.IO SOLUTIONS</h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-200">
               We build premium web products, business systems, creative assets, and service workflows that help ambitious
               founders launch, operate, and scale with confidence.

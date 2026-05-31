@@ -7,7 +7,7 @@ export default function AuthLayout() {
         <div>
           <Link to="/" className="inline-flex items-center gap-3">
             <span className="flex h-11 w-11 items-center justify-center rounded-md bg-brand-600 text-lg font-black">VB</span>
-            <span className="font-black uppercase tracking-wide">Veenbreeze Solutions</span>
+            <span className="font-black uppercase tracking-wide">Victor.io Solutions</span>
           </Link>
           <h1 className="mt-12 max-w-2xl text-4xl font-black tracking-normal sm:text-6xl">
             Build smarter digital products with a team that sweats the details.
