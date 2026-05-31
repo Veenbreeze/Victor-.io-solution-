@@ -136,7 +136,7 @@ export default function MainLayout() {
           <div>
             <p className="font-bold">Contact</p>
             <div className="mt-3 grid gap-2 text-sm text-slate-600 dark:text-slate-300">
-              <span>hello@veenbreeze.com</span>
+              <span>mpambijevictor04@gmail.com</span>
               <span>Dar es Salaam, Tanzania</span>
             </div>
           </div>
