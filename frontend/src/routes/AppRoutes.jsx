@@ -34,6 +34,7 @@ export default function AppRoutes() {
       <Route element={<AuthLayout />}>
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
+        <Route path="home" element={<Home />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>

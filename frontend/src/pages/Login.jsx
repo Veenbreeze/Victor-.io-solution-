@@ -38,6 +38,11 @@ export default function Login() {
       <p className="mt-5 text-center text-sm text-slate-600 dark:text-slate-300">
         Need an account? <Link className="font-bold text-brand-700 dark:text-brand-100" to="/register">Register</Link>
       </p>
+      
+      <p className="mt-5 text-center text-sm text-slate-600 dark:text-slate-300">
+        satisfied? <Link className="font-bold text-brand-700 dark:text-brand-100" to="/home">Back home</Link>
+      </p>
+
     </form>
   );
 }

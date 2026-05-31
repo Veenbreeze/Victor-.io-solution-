@@ -37,6 +37,10 @@ export default function Register() {
       <p className="mt-5 text-center text-sm text-slate-600 dark:text-slate-300">
         Already registered? <Link className="font-bold text-brand-700 dark:text-brand-100" to="/login">Login</Link>
       </p>
+       <p className="mt-5 text-center text-sm text-slate-600 dark:text-slate-300">
+        satisfied? <Link className="font-bold text-brand-700 dark:text-brand-100" to="/home">Back home</Link>
+      </p>
+
     </form>
   );
 }
