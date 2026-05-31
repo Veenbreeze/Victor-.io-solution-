@@ -120,7 +120,7 @@ export default function MainLayout() {
       <footer className="border-t border-slate-200 bg-white py-12 dark:border-slate-800 dark:bg-slate-950">
         <div className="container-pad grid gap-8 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
-            <p className="text-lg font-black text-slate-950 dark:text-white">Veenbreeze Solutions</p>
+            <p className="text-lg font-black text-slate-950 dark:text-white">Victor.io Solutions</p>
             <p className="mt-3 max-w-md text-sm leading-7 text-slate-600 dark:text-slate-300">
               Modern websites, systems, creative services, and digital execution for ambitious teams.
             </p>
