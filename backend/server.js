@@ -10,8 +10,10 @@ import portfolioRoutes from './routes/portfolioRoutes.js';
 import messageRoutes from './routes/messageRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import { errorHandler, notFoundHandler } from './middleware/errorMiddleware.js';
+import { validateEnv } from './config/env.js';
 
 dotenv.config();
+validateEnv();
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);

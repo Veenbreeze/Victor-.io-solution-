@@ -156,6 +156,22 @@ Backend:
 - `backend/render.yaml` defines a Render web service.
 - Set production environment variables in Render.
 - Set `CLIENT_URL` to the deployed Vercel domain. Multiple origins can be comma-separated.
+- `backend/config/env.js` validates required backend environment variables at startup.
+
+Required backend environment variables:
+
+```text
+PORT
+DB_HOST
+DB_PORT
+DB_USER
+DB_PASSWORD
+DB_NAME
+JWT_SECRET
+CLIENT_URL
+```
+
+Use `backend/.env.example` for local development and `backend/.env.production.example` as the checklist for Render.
 
 ## Step 9: Production Deployment Guide
 
