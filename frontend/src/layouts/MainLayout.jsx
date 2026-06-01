@@ -3,6 +3,7 @@ import { Menu, Moon, Sun, X } from 'lucide-react';
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useTheme } from '../context/ThemeContext.jsx';
+import Footer from '../components/Footer.jsx';
 
 const navItems = [
   ['Home', '/'],
@@ -117,31 +118,7 @@ export default function MainLayout() {
         <Outlet />
       </main>
 
-      <footer className="border-t border-slate-200 bg-white py-12 dark:border-slate-800 dark:bg-slate-950">
-        <div className="container-pad grid gap-8 md:grid-cols-[1.4fr_1fr_1fr]">
-          <div>
-            <p className="text-lg font-black text-slate-950 dark:text-white">Victor.io Solutions</p>
-            <p className="mt-3 max-w-md text-sm leading-7 text-slate-600 dark:text-slate-300">
-              Modern websites, systems, creative services, and digital execution for ambitious teams.
-            </p>
-          </div>
-          <div>
-            <p className="font-bold">Company</p>
-            <div className="mt-3 grid gap-2 text-sm text-slate-600 dark:text-slate-300">
-              <Link to="/about">About</Link>
-              <Link to="/services">Services</Link>
-              <Link to="/portfolio">Portfolio</Link>
-            </div>
-          </div>
-          <div>
-            <p className="font-bold">Contact</p>
-            <div className="mt-3 grid gap-2 text-sm text-slate-600 dark:text-slate-300">
-              <span>mpambijevictor04@gmail.com</span>
-              <span>Dar es Salaam, Tanzania</span>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
