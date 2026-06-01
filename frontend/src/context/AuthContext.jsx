@@ -15,6 +15,7 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(getStoredUser);
   const [token, setToken] = useState(localStorage.getItem('veenbreeze_token'));
   const [loading, setLoading] = useState(false);
+  const [oauthError, setOAuthError] = useState('');
 
   const persistSession = (payload) => {
     localStorage.setItem('veenbreeze_token', payload.token);
@@ -23,12 +24,25 @@ export function AuthProvider({ children }) {
     setUser(payload.user);
   };
 
+  const setAuthState = (payload) => {
+    persistSession(payload);
+  };
+
+  const clearOAuthError = () => {
+    setOAuthError('');
+  };
+
   const login = async (credentials) => {
     setLoading(true);
+    setOAuthError('');
     try {
       const { data } = await authService.login(credentials);
       persistSession(data);
       return data.user;
+    } catch (err) {
+      const errorMsg = err.response?.data?.message || 'Login failed';
+      setOAuthError(errorMsg);
+      throw err;
     } finally {
       setLoading(false);
     }
@@ -36,10 +50,15 @@ export function AuthProvider({ children }) {
 
   const register = async (payload) => {
     setLoading(true);
+    setOAuthError('');
     try {
       const { data } = await authService.register(payload);
       persistSession(data);
       return data.user;
+    } catch (err) {
+      const errorMsg = err.response?.data?.message || 'Registration failed';
+      setOAuthError(errorMsg);
+      throw err;
     } finally {
       setLoading(false);
     }
@@ -50,6 +69,7 @@ export function AuthProvider({ children }) {
     localStorage.removeItem('veenbreeze_user');
     setToken(null);
     setUser(null);
+    setOAuthError('');
   };
 
   const value = useMemo(
@@ -57,13 +77,16 @@ export function AuthProvider({ children }) {
       user,
       token,
       loading,
+      oauthError,
       isAuthenticated: Boolean(token && user),
       isAdmin: user?.role === 'admin',
       login,
       register,
-      logout
+      logout,
+      setAuthState,
+      clearOAuthError
     }),
-    [user, token, loading]
+    [user, token, loading, oauthError]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

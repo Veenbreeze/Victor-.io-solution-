@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, UserPlus } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
+import OAuthButtons from '../components/OAuthButtons.jsx';
 import { getErrorMessage } from '../utils/format.js';
 
 export default function Register() {
@@ -24,7 +25,14 @@ export default function Register() {
   return (
     <form onSubmit={submit}>
       <h2 className="text-2xl font-black">Create account</h2>
-      <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">Register to access your Veenbreeze dashboard.</p>
+      <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">Register to access your dashboard.</p>
+
+      {/* OAuth Buttons */}
+      <div className="mt-6">
+        <OAuthButtons isLoading={loading} disabled={loading} />
+      </div>
+
+      {/* Email/Password Form */}
       <div className="mt-6 grid gap-4">
         <input className="field" placeholder="Full name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
         <input className="field" type="email" placeholder="Email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required />

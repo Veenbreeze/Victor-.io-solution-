@@ -10,6 +10,7 @@ import Pricing from '../pages/Pricing.jsx';
 import Contact from '../pages/Contact.jsx';
 import Login from '../pages/Login.jsx';
 import Register from '../pages/Register.jsx';
+import AuthCallback from '../pages/AuthCallback.jsx';
 import Dashboard from '../pages/Dashboard.jsx';
 import AdminDashboard from '../pages/AdminDashboard.jsx';
 import NotFound from '../pages/NotFound.jsx';
@@ -34,6 +35,7 @@ export default function AppRoutes() {
       <Route element={<AuthLayout />}>
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
+        <Route path="auth-callback" element={<AuthCallback />} />
         <Route path="home" element={<Home />} />
       </Route>
       <Route path="*" element={<NotFound />} />

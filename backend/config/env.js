@@ -1,7 +1,8 @@
 import { getDatabaseConfig } from './dbEnv.js';
 
 const requiredBaseVars = ['PORT', 'JWT_SECRET', 'CLIENT_URL'];
-const requiredProductionVars = [...requiredBaseVars];
+const optionalOAuthVars = ['GOOGLE_CLIENT_ID', 'GOOGLE_CLIENT_SECRET', 'GITHUB_CLIENT_ID', 'GITHUB_CLIENT_SECRET'];
+const requiredProductionVars = [...requiredBaseVars, ...optionalOAuthVars];
 
 export function validateEnv() {
   const isProduction = process.env.NODE_ENV === 'production';
