@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { UserPlus } from 'lucide-react';
+import { ArrowLeft, UserPlus } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
 import { getErrorMessage } from '../utils/format.js';
 
@@ -34,13 +34,14 @@ export default function Register() {
       <button className="btn-primary mt-6 w-full" disabled={loading}>
         <UserPlus size={18} /> {loading ? 'Creating...' : 'Register'}
       </button>
-      <p className="mt-5 text-center text-sm text-slate-600 dark:text-slate-300">
-        Already registered? <Link className="font-bold text-brand-700 dark:text-brand-100" to="/login">Login</Link>
-      </p>
-       <p className="mt-5 text-center text-sm text-slate-600 dark:text-slate-300">
-        satisfied? <Link className="font-bold text-brand-700 dark:text-brand-100" to="/home">Back home</Link>
-      </p>
-
+      <div className="mt-5 space-y-4 text-center text-sm text-slate-600 dark:text-slate-300">
+        <p>
+          Already registered? <Link className="font-bold text-brand-700 dark:text-brand-100" to="/login">Login</Link>
+        </p>
+        <Link className="inline-flex items-center justify-center gap-2 font-bold text-brand-700 transition hover:text-brand-900 dark:text-brand-100 dark:hover:text-white" to="/">
+          <ArrowLeft size={16} /> Back to home
+        </Link>
+      </div>
     </form>
   );
 }

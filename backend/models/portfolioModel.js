@@ -1,14 +1,19 @@
 import { pool } from '../config/db.js';
+import { parseJsonArray } from '../utils/validators.js';
+
+function normalizePortfolio(item) {
+  return { ...item, technologies: parseJsonArray(item.technologies) };
+}
 
 export async function listPortfolio() {
   const [rows] = await pool.execute('SELECT * FROM portfolio ORDER BY created_at DESC');
-  return rows.map((item) => ({ ...item, technologies: JSON.parse(item.technologies || '[]') }));
+  return rows.map(normalizePortfolio);
 }
 
 export async function findPortfolioById(id) {
   const [rows] = await pool.execute('SELECT * FROM portfolio WHERE id = ? LIMIT 1', [id]);
   const item = rows[0] || null;
-  return item ? { ...item, technologies: JSON.parse(item.technologies || '[]') } : null;
+  return item ? normalizePortfolio(item) : null;
 }
 
 export async function createPortfolio({ title, description, image_url, technologies, github_url, live_url }) {
