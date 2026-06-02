@@ -58,3 +58,16 @@ app.use(errorHandler);
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+// Debugging: Log critical environment variables
+console.log(
+   "GOOGLE_CLIENT_ID:",
+   process.env.GOOGLE_CLIENT_ID || "MISSING"
+);
+console.log(
+   "GOOGLE_CLIENT_SECRET:",
+   process.env.GOOGLE_CLIENT_SECRET || "MISSING"
+);
+console.log(
+   "JWT_SECRET:",
+   process.env.JWT_SECRET || "MISSING"
+);
