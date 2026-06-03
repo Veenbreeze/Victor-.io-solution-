@@ -2,6 +2,7 @@ node_modules/
 dist/
 .vercel/
 .env
+.AI-feature/venv/
 .env.local
 npm-debug.log*
 uploads/*
