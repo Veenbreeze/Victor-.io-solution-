@@ -39,7 +39,7 @@ export default function Contact() {
           />
           <div className="mt-8 grid gap-4">
             <p className="flex items-center gap-3 text-sm font-semibold text-slate-700 dark:text-slate-200">
-              <Mail className="text-brand-600" size={20} /> hello@veenbreeze.com
+              <Mail className="text-brand-600" size={20} /> mpambijevictor04@gmail.com
             </p>
             <p className="flex items-center gap-3 text-sm font-semibold text-slate-700 dark:text-slate-200">
               <MapPin className="text-brand-600" size={20} /> Dar es Salaam, Tanzania

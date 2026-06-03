@@ -34,9 +34,9 @@ export default function MainLayout() {
       <header className="sticky top-0 z-50 border-b border-white/30 bg-white/85 backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/80">
         <nav className="container-pad flex h-20 items-center justify-between">
           <Link to="/" className="flex items-center gap-3" onClick={() => setOpen(false)}>
-            <span className="flex h-11 w-11 items-center justify-center rounded-md bg-brand-600 text-lg font-black text-white">VB</span>
+            <span className="flex h-11 w-11 items-center justify-center rounded-md bg-brand-600 text-lg font-black text-white">VIS</span>
             <span>
-              <span className="block text-sm font-black uppercase tracking-wide text-slate-950 dark:text-white">Veenbreeze</span>
+              <span className="block text-sm font-black uppercase tracking-wide text-slate-950 dark:text-white">Victor.io</span>
               <span className="block text-xs font-semibold text-brand-700 dark:text-brand-100">Solutions</span>
             </span>
           </Link>

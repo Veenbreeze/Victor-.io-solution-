@@ -1,69 +1,114 @@
-CREATE DATABASE IF NOT EXISTS veenbreeze_solutions CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE veenbreeze_solutions;
+-- =========================
+-- DATABASE (Render PostgreSQL)
+-- =========================
+-- NOTE: kwenye Render tayari DB yako ipo, kwa hiyo SKIP CREATE DATABASE
+-- endelea tu na tables
 
+-- =========================
+-- USERS TABLE
+-- =========================
 CREATE TABLE IF NOT EXISTS users (
-  id INT AUTO_INCREMENT PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   name VARCHAR(120) NOT NULL,
-  email VARCHAR(160) NOT NULL UNIQUE,
+  email VARCHAR(160) UNIQUE NOT NULL,
   password VARCHAR(255),
+
   provider VARCHAR(20) DEFAULT 'email',
   provider_id VARCHAR(255),
-  avatar VARCHAR(500),
-  role ENUM('admin', 'user') NOT NULL DEFAULT 'user',
+
+  avatar TEXT,
+
+  role VARCHAR(20) DEFAULT 'user',
+
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  UNIQUE KEY unique_provider_id (provider, provider_id)
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- =========================
+-- SERVICES TABLE
+-- =========================
 CREATE TABLE IF NOT EXISTS services (
-  id INT AUTO_INCREMENT PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   title VARCHAR(160) NOT NULL,
-  slug VARCHAR(180) NOT NULL UNIQUE,
+  slug VARCHAR(180) UNIQUE NOT NULL,
   description TEXT NOT NULL,
+
   icon VARCHAR(80) DEFAULT 'Sparkles',
   price VARCHAR(80) DEFAULT 'Custom quote',
+
   is_featured BOOLEAN DEFAULT FALSE,
+
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- =========================
+-- PORTFOLIO TABLE
+-- =========================
 CREATE TABLE IF NOT EXISTS portfolio (
-  id INT AUTO_INCREMENT PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   title VARCHAR(180) NOT NULL,
   description TEXT NOT NULL,
-  image_url VARCHAR(500),
-  technologies JSON NOT NULL,
-  github_url VARCHAR(500),
-  live_url VARCHAR(500),
+
+  image_url TEXT,
+
+  technologies JSONB,
+
+  github_url TEXT,
+  live_url TEXT,
+
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- =========================
+-- MESSAGES TABLE
+-- =========================
 CREATE TABLE IF NOT EXISTS messages (
-  id INT AUTO_INCREMENT PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   name VARCHAR(120) NOT NULL,
   email VARCHAR(160) NOT NULL,
   subject VARCHAR(180) DEFAULT 'New inquiry',
   message TEXT NOT NULL,
-  status ENUM('new', 'read', 'archived') NOT NULL DEFAULT 'new',
+
+  status VARCHAR(20) DEFAULT 'new',
+
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO services (title, slug, description, icon, price, is_featured) VALUES
-('Web Development', 'web-development', 'Fast, responsive websites and web apps built for conversion, SEO, and long-term maintainability.', 'Globe2', 'From $600', TRUE),
-('System Development', 'system-development', 'Custom operational systems, dashboards, workflow automations, and secure business platforms.', 'ServerCog', 'From $1,200', TRUE),
-('Django Solutions', 'django-solutions', 'Robust Python and Django backends, APIs, admin panels, and integrations.', 'Code2', 'From $900', FALSE),
-('PHP Solutions', 'php-solutions', 'Modern PHP applications, Laravel-style architecture, maintenance, and legacy upgrades.', 'Braces', 'From $700', FALSE),
-('Graphic Design', 'graphic-design', 'Premium visual identity, marketing assets, social kits, and polished brand collateral.', 'Palette', 'From $120', FALSE),
-('CV Writing', 'cv-writing', 'ATS-friendly CVs, resumes, LinkedIn refreshes, and professional profile positioning.', 'FileText', 'From $45', FALSE),
-('Social Media Management', 'social-media-management', 'Content calendars, campaign assets, scheduling, analytics, and growth support.', 'Megaphone', 'From $250/mo', TRUE),
-('Coding Tutoring', 'coding-tutoring', 'Practical one-on-one coaching for web development, databases, and project delivery.', 'GraduationCap', 'From $25/hr', FALSE),
-('Freelancing Services', 'freelancing-services', 'Proposal writing, portfolio setup, client communication, and delivery systems for freelancers.', 'BriefcaseBusiness', 'From $80', FALSE)
-ON DUPLICATE KEY UPDATE title = VALUES(title);
+-- =========================
+-- SAMPLE DATA (SERVICES)
+-- =========================
+INSERT INTO services (title, slug, description, icon, price, is_featured)
+VALUES
+('Web Development', 'web-development', 'Fast responsive websites and web apps.', 'Globe2', 'From $600', TRUE),
+('System Development', 'system-development', 'Custom dashboards and business systems.', 'ServerCog', 'From $1200', TRUE),
+('Django Solutions', 'django-solutions', 'Python Django APIs and backend systems.', 'Code2', 'From $900', FALSE),
+('PHP Solutions', 'php-solutions', 'Modern PHP applications and maintenance.', 'Braces', 'From $700', FALSE),
+('Graphic Design', 'graphic-design', 'Branding and marketing visuals.', 'Palette', 'From $120', FALSE),
+('Social Media Management', 'social-media-management', 'Content and growth strategy.', 'Megaphone', 'From $250/mo', TRUE)
+ON CONFLICT (slug) DO NOTHING;
 
-INSERT INTO portfolio (title, description, image_url, technologies, github_url, live_url) VALUES
-('SaaS Analytics Dashboard', 'A secure KPI dashboard with role-aware reporting and real-time business insights.', 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80', JSON_ARRAY('React', 'Node.js', 'MySQL'), 'https://github.com/veenbreeze/analytics-dashboard', 'https://example.com'),
-('Creative Agency Website', 'A high-converting agency website with polished motion, service funnels, and CMS-ready sections.', 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80', JSON_ARRAY('React', 'TailwindCSS', 'Framer Motion'), 'https://github.com/veenbreeze/agency-site', 'https://example.com'),
-('Student Learning Portal', 'A Django learning portal with progress tracking, content modules, and admin publishing workflows.', 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80', JSON_ARRAY('Django', 'MySQL', 'Bootstrap'), 'https://github.com/veenbreeze/learning-portal', 'https://example.com')
-ON DUPLICATE KEY UPDATE title = VALUES(title);
+-- =========================
+-- SAMPLE DATA (PORTFOLIO)
+-- =========================
+INSERT INTO portfolio (title, description, image_url, technologies, github_url, live_url)
+VALUES
+(
+'SaaS Dashboard',
+'Analytics dashboard with real-time insights.',
+'https://images.unsplash.com/photo-1551288049-bebda4e38f71',
+'["React","Node.js","PostgreSQL"]',
+'https://github.com/example/dashboard',
+'https://example.com'
+),
+(
+'Agency Website',
+'Modern animated agency website.',
+'https://images.unsplash.com/photo-1497366754035-f200968a6e72',
+'["React","Tailwind"]',
+'https://github.com/example/agency',
+'https://example.com'
+)
+ON CONFLICT DO NOTHING;
