@@ -13,10 +13,10 @@ export async function createUser({ name, email, passwordHash, role = 'user' }) {
 /**
  * Create user via OAuth (no password required)
  */
-export async function createOAuthUser({ name, email, provider, providerId, avatar, role = 'user' }) {
+export async function createOAuthUser({ name, email, provider, providerId, role = 'user' }) {
   const [result] = await pool.execute(
-    'INSERT INTO users (name, email, provider, provider_id, avatar, role) VALUES (?, ?, ?, ?, ?, ?)',
-    [name, email, provider, providerId, avatar, role]
+    'INSERT INTO users (name, email, provider, provider_id, role) VALUES (?, ?, ?, ?, ?, ?)',
+    [name, email, provider, providerId, role]
   );
   return findUserById(result.insertId);
 }
