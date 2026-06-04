@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Assistant</title>
+
+    <style>
+        :root {
+            --primary: #7b2d26;
+            --primary-light: #a63e36;
+            --secondary: #d9a441;
+            --bg: linear-gradient(135deg, #f6f4f1, #efeae4);
+            --glass: rgba(255, 255, 255, 0.55);
+            --text: #2c2c2c;
+        }
+
+        /* =========================
+   GLOBAL
+========================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--bg);
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            overflow: hidden;
+        }
+
+        /* =========================
+   APP CONTAINER
+========================= */
+        .app {
+            width: 100%;
+            max-width: 420px;
+            height: 92vh;
+
+            background: var(--glass);
+            backdrop-filter: blur(18px);
+
+            border-radius: 28px;
+            overflow: hidden;
+
+            display: flex;
+            flex-direction: column;
+
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.15),
+                inset 0 1px 1px rgba(255, 255, 255, 0.4);
+        }
+
+        /* =========================
+   TOP CARD
+========================= */
+        .app-row {
+            margin: 14px;
+
+            display: flex;
+            align-items: stretch;
+
+            min-height: 165px;
+
+            border-radius: 28px;
+            overflow: hidden;
+
+            background: linear-gradient(135deg,
+                    var(--primary),
+                    var(--primary-light));
+
+            box-shadow:
+                0 12px 35px rgba(0, 0, 0, 0.18);
+        }
+
+        /* =========================
+   BURGER IMAGE
+========================= */
+        .burger-mhg {
+            width: 42%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .burger-mhg::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+
+            background: linear-gradient(to right,
+                    rgba(0, 0, 0, 0.22),
+                    rgba(0, 0, 0, 0.02));
+
+            z-index: 2;
+        }
+
+        .burger-mhg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+
+            transition: 0.5s ease;
+        }
+
+        .burger-mhg:hover img {
+            transform: scale(1.08);
+        }
+
+        /* =========================
+   HEADER SECTION
+========================= */
+        .header {
+            flex: 1;
+
+            padding: 22px 18px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            position: relative;
+
+            color: white;
+        }
+
+        /* online status */
+        .status {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+
+            width: 11px;
+            height: 11px;
+
+            border-radius: 50%;
+            background: #2ecc71;
+
+            box-shadow:
+                0 0 10px #2ecc71,
+                0 0 18px #2ecc71;
+        }
+
+        /* restaurant logo */
+        .header img {
+            width: 58px;
+            height: 58px;
+
+            object-fit: cover;
+            border-radius: 50%;
+
+            border: 3px solid rgba(255, 255, 255, 0.85);
+
+            margin-bottom: 12px;
+
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+        }
+
+        /* title */
+        .header h2 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 6px;
+
+            letter-spacing: 0.3px;
+        }
+
+        /* subtitle */
+        .header p {
+            font-size: 13px;
+            opacity: 0.85;
+            line-height: 1.5;
+        }
+
+        /* =========================
+   CHAT AREA
+========================= */
+        .chat {
+            flex: 1;
+
+            padding: 15px;
+
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+
+            overflow-y: auto;
+        }
+
+        /* custom scrollbar */
+        .chat::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .chat::-webkit-scrollbar-thumb {
+            background: #d2d2d2;
+            border-radius: 20px;
+        }
+
+        /* =========================
+   MESSAGE BUBBLES
+========================= */
+        .message {
+            max-width: 78%;
+
+            padding: 12px 15px;
+
+            border-radius: 18px;
+
+            font-size: 14px;
+            line-height: 1.5;
+
+            animation: fadeIn 0.3s ease;
+
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .user {
+            align-self: flex-end;
+
+            background: linear-gradient(135deg,
+                    var(--primary),
+                    var(--primary-light));
+
+            color: white;
+
+            border-bottom-right-radius: 6px;
+        }
+
+        .bot {
+            align-self: flex-start;
+
+            background: white;
+            color: var(--text);
+
+            border-bottom-left-radius: 6px;
+        }
+
+        /* =========================
+   INPUT AREA
+========================= */
+        .input-area {
+            padding: 12px;
+        }
+
+        .input-box {
+            display: flex;
+            align-items: center;
+
+            background: white;
+
+            border-radius: 30px;
+            padding: 8px;
+
+            box-shadow:
+                0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .input-box input {
+            flex: 1;
+
+            border: none;
+            outline: none;
+
+            background: transparent;
+
+            padding: 10px 14px;
+
+            font-size: 14px;
+            color: var(--text);
+        }
+
+        .input-box input::placeholder {
+            color: #999;
+        }
+
+        .input-box button {
+            border: none;
+            outline: none;
+
+            padding: 11px 18px;
+
+            border-radius: 24px;
+
+            cursor: pointer;
+
+            font-weight: 600;
+            color: white;
+
+            background: linear-gradient(135deg,
+                    var(--secondary),
+                    #c8932f);
+
+            transition: 0.3s ease;
+        }
+
+        .input-box button:hover {
+            transform: translateY(-1px) scale(1.03);
+
+            box-shadow:
+                0 8px 18px rgba(217, 164, 65, 0.35);
+        }
+
+        /* =========================
+   FOOTER
+========================= */
+        .footer {
+            margin-top: 10px;
+
+            text-align: center;
+
+            font-size: 14px;
+            color: #777;
+        }
+
+        .footer img {
+            width: 24px;
+            vertical-align: middle;
+            margin-right: 4px;
+        }
+
+        .brand {
+            position: relative;
+
+            text-decoration: none;
+
+            color: var(--primary);
+            font-weight: 700;
+
+            transition: 0.3s ease;
+        }
+
+        .brand::after {
+            content: "";
+            position: absolute;
+
+            left: 0;
+            bottom: -3px;
+
+            width: 0%;
+            height: 2px;
+
+            background: linear-gradient(90deg,
+                    var(--secondary),
+                    var(--primary));
+
+            transition: 0.3s ease;
+        }
+
+        .brand:hover {
+            color: var(--primary-light);
+        }
+
+        .brand:hover::after {
+            width: 100%;
+        }
+
+        /* =========================
+   ANIMATION
+========================= */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Top Right Container */
+        .top-ai-btn {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            padding: 15px 18px 0 18px;
+        }
+
+        /* AI Button */
+        .btn-ai {
+            border: none;
+            outline: none;
+
+            padding: 12px 20px;
+
+            border-radius: 30px;
+
+            cursor: pointer;
+
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+
+            background: linear-gradient(135deg,
+                    #7b2d26,
+                    #a63e36);
+
+            box-shadow:
+                0 10px 20px rgba(123, 45, 38, 0.25);
+
+            transition: 0.3s ease;
+        }
+
+        /* Hover */
+        .btn-ai:hover {
+            transform: translateY(-2px) scale(1.03);
+
+            box-shadow:
+                0 15px 28px rgba(123, 45, 38, 0.35);
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="app">
+
+        <div class="app-row">
+            <div class="burger-mhg">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTOLJSqVeARsH9X1ATZu3mHSrl5HflwaLHNA&s"
+                    alt="">
+            </div>
+
+            <div class="header">
+                <span class="status"></span>
+                <img src="../assets/image.png" alt="Restaurant">
+                <h2>Restaurant Assistant</h2>
+                <p>Smart food & menu assistant</p>
+            </div>
+
+        </div>
+
+
+        <div id="chat" class="chat"></div>
+
+        <div class="input-area">
+            <div class="input-box">
+                <input type="text" id="input" placeholder="Ask about dishes, prices...">
+                <button id="send">Send</button>
+            </div>
+            <div class="footer">
+                <img src="../assets//youtube.png" style="width: 10%; height: 10%;" alt="">
+                Created by
+                <a href="https://www.youtube.com/@CodewithAfidhu" target="_blank" class="brand">
+                    CodewithAfidhu
+                </a>
+            </div>
+        </div>
+
+        <div class="top-ai-btn">
+            <a href="./index.html">
+                <button class="btn-ai">
+                    Back to Menu
+                </button>
+            </a>
+        </div>
+
+    </div>
+
+    <script>
+        const chat = document.getElementById('chat');
+        const input = document.getElementById('input');
+        const sendBtn = document.getElementById('send');
+
+        const addMessage = (text, type) => {
+            const msg = document.createElement('div');
+            msg.className = `message ${type}`;
+            msg.innerText = text;
+            chat.appendChild(msg);
+            chat.scrollTop = chat.scrollHeight;
+            return msg;
+        };
+
+        const sendMessage = async () => {
+            const text = input.value.trim();
+            if (!text) return;
+
+            input.value = '';
+            addMessage(text, 'user');
+
+            const botMsg = addMessage('Typing...', 'bot');
+
+            try {
+                const response = await fetch('http://127.0.0.1:8000/api/generate/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: text })
+                });
+
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let result = '';
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+
+                    result += decoder.decode(value);
+                    botMsg.innerText = result;
+                }
+
+            } catch (err) {
+                botMsg.innerText = "⚠️ Server error. Please try again.";
+            }
+        };
+
+        sendBtn.onclick = sendMessage;
+
+        input.addEventListener('keypress', e => {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
+
+</body>
+
+</html>
