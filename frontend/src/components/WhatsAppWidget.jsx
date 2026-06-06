@@ -125,7 +125,7 @@ function WhatsAppWidget() {
 
         {!open && (
           <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold w-6 h-6 flex items-center justify-center rounded-full animate-pulse">
-            1
+            ?
           </span>
         )}
 

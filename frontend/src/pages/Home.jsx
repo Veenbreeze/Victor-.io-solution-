@@ -37,7 +37,7 @@ export default function Home() {
             title="Everything needed to launch and operate with polish."
             description="Choose focused support or combine services into a complete product delivery package."
           />
-          <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+         <div className="mt-12 grid gap-8 md:grid-cols-2 xl:grid-cols-3">
             {services.slice(0, 6).map((service) => (
               <ServiceCard key={service.title} service={service} />
             ))}
@@ -48,7 +48,7 @@ export default function Home() {
       <section className="bg-white py-20 dark:bg-slate-950">
         <div className="container-pad">
           <SectionHeader centered eyebrow="Portfolio" title="Built for real users, clean operations, and growth." />
-          <div className="mt-10 grid gap-6 lg:grid-cols-3">
+          <div className="mt-10 grid gap-10 md:grid-cols-2 xl:grid-cols-3">
             {portfolioItems.map((item) => (
               <PortfolioCard key={item.title} item={item} />
             ))}
@@ -62,7 +62,7 @@ export default function Home() {
             centered
             eyebrow="GitHub"
             title="Live projects from GitHub."
-            description="A dynamic view of public repositories, pulled directly from GitHub and ready to point at any username."
+            description="A dynamic view of public repositories, pulled directly from GitHub and ready to point at your username."
           />
           <div className="mt-10">
             <GitHubProjects />
@@ -70,17 +70,36 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-white py-20 dark:bg-slate-950">
-        <div className="container-pad grid gap-6 lg:grid-cols-3">
-          {testimonials.map((testimonial) => (
-            <article key={testimonial.name} className="glass rounded-lg p-6">
-              <p className="text-base leading-8 text-slate-700 dark:text-slate-200">“{testimonial.quote}”</p>
-              <p className="mt-6 font-bold text-slate-950 dark:text-white">{testimonial.name}</p>
-              <p className="text-sm text-brand-700 dark:text-brand-100">{testimonial.role}</p>
-            </article>
-          ))}
+     <section className="bg-white py-20 dark:bg-slate-950">
+  <div className="container-pad grid gap-8 lg:grid-cols-3">
+    {testimonials.map((testimonial) => (
+      <article
+        key={testimonial.name}
+        className="glass rounded-2xl p-8 text-center transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
+      >
+        <div className="flex justify-center">
+          <img
+            src={testimonial.image}
+            alt={testimonial.name}
+            className="h-20 w-20 rounded-full border-4 border-brand-500 object-cover shadow-lg"
+          />
         </div>
-      </section>
+
+        <p className="mt-6 text-base leading-8 text-slate-700 dark:text-slate-200">
+          "{testimonial.quote}"
+        </p>
+
+        <h3 className="mt-6 text-lg font-bold text-slate-950 dark:text-white">
+          {testimonial.name}
+        </h3>
+
+        <p className="text-sm font-medium text-brand-700 dark:text-brand-100">
+          {testimonial.role}
+        </p>
+      </article>
+    ))}
+  </div>
+</section>
 
       <section className="py-20">
         <div className="container-pad">

@@ -119,18 +119,24 @@ export const pricingPlans = [
 
 export const testimonials = [
   {
-    name: 'Amina K.',
-    role: 'Founder, Retail Studio',
-    quote: 'Victor turned a rough idea into a polished platform that our customers understood immediately.'
+    name: 'Zakia N.',
+    role: 'Founder, Goldfy company',
+    image: 'src/assets/zakia.jpeg',
+    quote:
+      'Victor turned a rough idea into a polished platform that our customers understood immediately.'
   },
   {
     name: 'David M.',
     role: 'Operations Lead',
-    quote: 'The dashboard helped our team replace spreadsheets with a system we actually trust every day.'
+    image: 'https://randomuser.me/api/portraits/men/32.jpg',
+    quote:
+      'The dashboard helped our team replace spreadsheets with a system we actually trust every day.'
   },
   {
-    name: 'Grace N.',
+    name: 'Britney N.',
     role: 'Freelance Designer',
-    quote: 'Their CV and portfolio support helped me present my work with confidence and win better clients.'
+    image: 'src/assets/britney.jpeg',
+    quote:
+      'Their CV and portfolio support helped me present my work with confidence and win better clients.'
   }
 ];

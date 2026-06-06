@@ -5,19 +5,19 @@ import { ArrowRight } from 'lucide-react';
 
 const slides = [
   {
-    image: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1800&q=85',
+    image: '/src/assets/cons 1.jpeg',
     label: 'Full stack delivery'
   },
   {
-    image: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1800&q=85',
+    image: '/src/assets/cons 5.jpeg',
     label: 'Modern digital studios'
   },
   {
-    image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1800&q=85',
+    image: '/src/assets/cons 3.jpeg',
     label: 'Strategy, systems, and launch'
   },
   {
-    image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1800&q=85',
+    image: '/src/assets/cons 4.jpeg',
     label: 'Creative business solutions'
   }
 ];

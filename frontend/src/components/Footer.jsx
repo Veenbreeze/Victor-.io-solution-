@@ -18,11 +18,11 @@ const socialLinks = [
 
 export default function Footer() {
   return (
-    <footer className="border-t border-slate-200 bg-white py-12 dark:border-slate-800 dark:bg-slate-950">
+    <footer className="border-t border-slate-200 bg-white py-12 dark:border-slate-300 dark:bg-slate-950">
       <div className="container-pad grid gap-10 lg:grid-cols-[1.4fr_1fr_1fr]">
         <div>
           <Link to="/" className="inline-flex items-center gap-3">
-            <span className="flex h-11 w-11 items-center justify-center rounded-md bg-brand-600 text-lg font-black text-white">VB</span>
+            <span className="flex h-11 w-11 items-center justify-center rounded-md bg-brand-600 text-lg font-black text-white">VIS</span>
             <span className="font-black uppercase tracking-wide text-slate-950 dark:text-white">Victor.io Solutions</span>
           </Link>
           <p className="mt-5 max-w-md text-sm leading-7 text-slate-600 dark:text-slate-300">
@@ -59,9 +59,6 @@ export default function Footer() {
           </div>
           <p className="mt-5 text-sm text-slate-500 dark:text-slate-400">mpambijevictor04@gmail.com</p>
         </div>
-      </div>
-      <div className="container-pad mt-10 border-t border-slate-200 pt-6 text-sm text-slate-500 dark:border-slate-800 dark:text-slate-400">
-        © {new Date().getFullYear()} Victor.io Solutions.
       </div>
     </footer>
   );
