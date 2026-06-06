@@ -1,4 +1,4 @@
-# VEENBREEZE SOLUTIONS
+# VICTOR.IO SOLUTIONS
 
 Production-ready full stack web application using React + Vite, TailwindCSS, Express.js, JWT authentication, and MySQL.
 
