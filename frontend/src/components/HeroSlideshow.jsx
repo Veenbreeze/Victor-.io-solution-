@@ -3,21 +3,26 @@ import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 
+import cons1 from '../assets/cons1.jpeg';
+import cons3 from '../assets/cons3.jpeg';
+import cons4 from '../assets/cons4.jpeg';
+import cons5 from '../assets/cons5.jpeg';
+
 const slides = [
   {
-    image: '/src/assets/cons 1.jpeg',
+    image: cons1,
     label: 'Full stack delivery'
   },
   {
-    image: '/src/assets/cons 5.jpeg',
+    image: cons5,
     label: 'Modern digital studios'
   },
   {
-    image: '/src/assets/cons 3.jpeg',
+    image: cons3,
     label: 'Strategy, systems, and launch'
   },
   {
-    image: '/src/assets/cons 4.jpeg',
+    image: cons4,
     label: 'Creative business solutions'
   }
 ];
@@ -26,18 +31,18 @@ export default function HeroSlideshow() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
-    const timer = window.setInterval(() => {
+    const timer = setInterval(() => {
       setActiveIndex((current) => (current + 1) % slides.length);
     }, 3000);
 
-    return () => window.clearInterval(timer);
+    return () => clearInterval(timer);
   }, []);
 
   const activeSlide = slides[activeIndex];
 
   return (
     <section className="relative isolate min-h-[calc(100vh-80px)] overflow-hidden bg-slate-950 text-white">
-      <AnimatePresence mode="sync">
+      <AnimatePresence mode="wait">
         <motion.img
           key={activeSlide.image}
           src={activeSlide.image}
@@ -51,6 +56,7 @@ export default function HeroSlideshow() {
       </AnimatePresence>
 
       <div className="absolute inset-0 -z-10 bg-slate-950/70" />
+
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_20%,rgba(6,182,212,0.22),transparent_34%),radial-gradient(circle_at_80%_30%,rgba(245,184,75,0.16),transparent_30%)]" />
 
       <div className="container-pad flex min-h-[calc(100vh-80px)] items-center py-20">
@@ -68,6 +74,7 @@ export default function HeroSlideshow() {
           >
             {activeSlide.label}
           </motion.p>
+
           <motion.h1
             className="max-w-5xl text-5xl font-black tracking-normal sm:text-7xl"
             initial={{ opacity: 0, y: 16 }}
@@ -76,6 +83,7 @@ export default function HeroSlideshow() {
           >
             Transforming Ideas Into Digital Solutions
           </motion.h1>
+
           <motion.p
             className="mt-6 max-w-2xl text-lg font-semibold leading-8 text-slate-200"
             initial={{ opacity: 0, y: 16 }}
@@ -84,6 +92,7 @@ export default function HeroSlideshow() {
           >
             Web Development • Systems • Creative Solutions
           </motion.p>
+
           <motion.div
             className="mt-8 flex flex-col gap-3 sm:flex-row"
             initial={{ opacity: 0, y: 16 }}
@@ -93,7 +102,11 @@ export default function HeroSlideshow() {
             <Link className="btn-primary" to="/services">
               Explore Services <ArrowRight size={18} />
             </Link>
-            <Link className="btn-secondary border-white/20 bg-white/10 text-white hover:text-white" to="/portfolio">
+
+            <Link
+              className="btn-secondary border-white/20 bg-white/10 text-white hover:text-white"
+              to="/portfolio"
+            >
               View Portfolio
             </Link>
           </motion.div>
@@ -104,9 +117,11 @@ export default function HeroSlideshow() {
         <div className="flex gap-2">
           {slides.map((slide, index) => (
             <button
-              key={slide.image}
+              key={slide.label}
               className={`h-1.5 rounded-full transition-all ${
-                index === activeIndex ? 'w-10 bg-brand-100' : 'w-4 bg-white/40 hover:bg-white/70'
+                index === activeIndex
+                  ? 'w-10 bg-brand-100'
+                  : 'w-4 bg-white/40 hover:bg-white/70'
               }`}
               onClick={() => setActiveIndex(index)}
               aria-label={`Show ${slide.label}`}

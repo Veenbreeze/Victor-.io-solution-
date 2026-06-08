@@ -10,6 +10,8 @@ import {
   Palette,
   ServerCog
 } from 'lucide-react';
+import zakia from '../assets/zakia.jpeg';
+import britney from '../assets/britney.jpeg';
 
 export const services = [
   {
@@ -121,7 +123,7 @@ export const testimonials = [
   {
     name: 'Zakia N.',
     role: 'Founder, Goldfy company',
-    image: 'src/assets/zakia.jpeg',
+    image: zakia,
     quote:
       'Victor turned a rough idea into a polished platform that our customers understood immediately.'
   },
@@ -135,7 +137,7 @@ export const testimonials = [
   {
     name: 'Britney N.',
     role: 'Freelance Designer',
-    image: 'src/assets/britney.jpeg',
+    image: britney,
     quote:
       'Their CV and portfolio support helped me present my work with confidence and win better clients.'
   }
