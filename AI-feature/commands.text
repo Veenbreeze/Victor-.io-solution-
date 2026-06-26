@@ -1,4 +1,0 @@
-source venv/bin/activate
-pip install django
-pip install ollama
-pip freeze > requirements.txt
