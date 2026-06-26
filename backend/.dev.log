@@ -1,3 +1,9 @@
 Veenbreeze API running on port 5000 (development)
   DB user: postgres
   DB host: 127.0.0.1
+[0mGET /api/health [32m200[0m 75.510 ms - 77[0m
+[0mPOST /api/auth/login [32m200[0m 615.055 ms - 389[0m
+[0mPOST /api/services [32m201[0m 10.643 ms - 297[0m
+[0mPOST /api/events [32m201[0m 9.432 ms - 376[0m
+[0mGET /api/services [32m200[0m 4.317 ms - 3287[0m
+[0mGET /api/events/upcoming?limit=5 [32m200[0m 5.948 ms - 378[0m
