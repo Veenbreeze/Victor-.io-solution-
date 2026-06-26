@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node --check server.js)",
+      "Bash(node --check config/db.js)",
+      "Bash(node --check config/passport.js)",
+      "Bash(node --check models/userModel.js)",
+      "Bash(node --check models/portfolioModel.js)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(node scripts/check-syntax.js)",
+      "Bash(where psql *)",
+      "Bash(where pg_isready)",
+      "Bash(pg_isready)"
+    ]
+  }
+}

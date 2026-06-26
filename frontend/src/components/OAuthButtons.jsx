@@ -2,17 +2,22 @@ import { useEffect, useState } from 'react';
 import { FaGithub } from 'react-icons/fa';
 import { SiGoogle } from 'react-icons/si';
 import { useAuth } from '../context/AuthContext.jsx';
+import { authService } from '../services/api.js';
 
-/**
- * OAuth Button Component
- * Displays Google and GitHub login buttons with loading states
- */
 export default function OAuthButtons({ isLoading, disabled }) {
   const { oauthError, clearOAuthError } = useAuth();
   const [localLoading, setLocalLoading] = useState(false);
-  const backendUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+  const [providers, setProviders] = useState({ google: true, github: true });
+  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+  const backendOrigin = apiUrl.replace(/\/api\/?$/, '');
 
-  // Clear error after 5 seconds
+  useEffect(() => {
+    authService
+      .providers()
+      .then(({ data }) => setProviders(data))
+      .catch(() => {});
+  }, []);
+
   useEffect(() => {
     if (oauthError) {
       const timer = setTimeout(clearOAuthError, 5000);
@@ -20,58 +25,58 @@ export default function OAuthButtons({ isLoading, disabled }) {
     }
   }, [oauthError, clearOAuthError]);
 
-  const handleGoogleLogin = () => {
+  const start = (provider) => {
     setLocalLoading(true);
-    // Redirect to backend OAuth endpoint
-    window.location.href = `${backendUrl.replace('/api', '')}/api/auth/google`;
-  };
-
-  const handleGitHubLogin = () => {
-    setLocalLoading(true);
-    // Redirect to backend OAuth endpoint
-    window.location.href = `${backendUrl.replace('/api', '')}/api/auth/github`;
+    window.location.href = `${backendOrigin}/api/auth/${provider}`;
   };
 
   const buttonDisabled = isLoading || disabled || localLoading;
 
+  if (!providers.google && !providers.github) {
+    return null;
+  }
+
   return (
     <div className="space-y-3">
-      {/* OAuth Error Message */}
       {oauthError && (
-        <div className="rounded-lg bg-red-50 p-3 text-sm font-semibold text-red-600 dark:bg-red-900/30 dark:text-red-400">
-          ⚠️ {oauthError}
+        <div className="rounded-xl border border-coral/40 bg-coral/10 px-4 py-3 text-sm font-semibold text-coral">
+          {oauthError}
         </div>
       )}
 
-      {/* Google Button */}
-      <button
-        type="button"
-        onClick={handleGoogleLogin}
-        disabled={buttonDisabled}
-        className="btn-oauth btn-google w-full disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        <SiGoogle size={18} />
-        <span>{localLoading ? 'Connecting to Google...' : 'Continue with Google'}</span>
-      </button>
+      <div className="grid gap-3 sm:grid-cols-2">
+        {providers.google && (
+          <button
+            type="button"
+            onClick={() => start('google')}
+            disabled={buttonDisabled}
+            className="btn-oauth btn-google disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <SiGoogle size={18} />
+            <span>{localLoading ? 'Redirecting…' : 'Google'}</span>
+          </button>
+        )}
+        {providers.github && (
+          <button
+            type="button"
+            onClick={() => start('github')}
+            disabled={buttonDisabled}
+            className="btn-oauth btn-github disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <FaGithub size={18} />
+            <span>{localLoading ? 'Redirecting…' : 'GitHub'}</span>
+          </button>
+        )}
+      </div>
 
-      {/* GitHub Button */}
-      <button
-        type="button"
-        onClick={handleGitHubLogin}
-        disabled={buttonDisabled}
-        className="btn-oauth btn-github w-full disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        <FaGithub size={18} />
-        <span>{localLoading ? 'Connecting to GitHub...' : 'Continue with GitHub'}</span>
-      </button>
-
-      {/* Divider */}
-      <div className="relative py-3">
+      <div className="relative py-1">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-slate-300 dark:border-slate-600"></div>
+          <div className="w-full border-t border-slate-200 dark:border-slate-700" />
         </div>
-        <div className="relative flex justify-center text-xs font-semibold text-slate-600 dark:text-slate-400 bg-white dark:bg-slate-900 px-2">
-          OR
+        <div className="relative flex justify-center">
+          <span className="bg-white px-3 text-xs font-semibold uppercase tracking-widest text-slate-500 dark:bg-slate-900 dark:text-slate-400">
+            or continue with email
+          </span>
         </div>
       </div>
     </div>
