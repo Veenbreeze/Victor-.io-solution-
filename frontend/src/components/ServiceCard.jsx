@@ -1,5 +1,10 @@
-export default function ServiceCard({ service }) {
-  const Icon = service.icon;
+import { resolveIcon } from '../utils/iconResolver.js';
+
+export default function ServiceCard({ service, index = 0 }) {
+  const Icon =
+    typeof service.icon === 'function' || typeof service.icon === 'object'
+      ? service.icon
+      : resolveIcon(service.icon);
 
   return (
     <div className="group h-[280px] w-full [perspective:1200px]">
@@ -24,7 +29,7 @@ export default function ServiceCard({ service }) {
         >
           <div className="mb-4 flex items-center justify-between">
             <span className="text-4xl font-black text-slate-200 dark:text-slate-800">
-              0{service.id || ''}
+              0{(index % 9) + 1}
             </span>
 
             {Icon && (
@@ -43,9 +48,7 @@ export default function ServiceCard({ service }) {
           </p>
 
           <div className="absolute bottom-6">
-            <p className="font-bold text-coral">
-              {service.price}
-            </p>
+            <p className="font-bold text-coral">{service.price}</p>
           </div>
         </article>
 
@@ -63,22 +66,18 @@ export default function ServiceCard({ service }) {
           "
         >
           <div className="flex h-full flex-col">
-            <h3 className="text-xl font-bold">
-              {service.title}
-            </h3>
-
+            <h3 className="text-xl font-bold">{service.title}</h3>
             <p className="mt-4 flex-1 text-sm leading-7 text-slate-300">
               {service.description}
             </p>
-
             <div className="border-t border-slate-800 pt-4">
-              <p className="font-bold text-brand-300">
-                {service.price}
-              </p>
-
-              <button className="mt-4 w-full rounded-lg bg-brand-600 px-4 py-3 font-semibold text-white transition hover:bg-brand-700">
-                Learn More
-              </button>
+              <p className="font-bold text-brand-300">{service.price}</p>
+              <a
+                href="/contact"
+                className="mt-4 inline-flex w-full items-center justify-center rounded-lg bg-brand-600 px-4 py-3 font-semibold text-white transition hover:bg-brand-700"
+              >
+                Request quote
+              </a>
             </div>
           </div>
         </article>

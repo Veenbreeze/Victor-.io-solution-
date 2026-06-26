@@ -10,48 +10,48 @@ const router = Router();
 router.post('/register', register);
 router.post('/login', login);
 
-// OAuth status (useful for the frontend)
 router.get('/providers', (_req, res) => {
-  res.json({
-    google: hasGoogleOAuth(),
-    github: hasGitHubOAuth()
-  });
+  res.json({ google: hasGoogleOAuth(), github: hasGitHubOAuth() });
 });
 
-if (hasGoogleOAuth()) {
-  router.get(
-    '/google',
-    passport.authenticate('google', { scope: ['profile', 'email'], session: false })
-  );
+// ---- Google OAuth ----
+router.get('/google', (req, res, next) => {
+  if (!hasGoogleOAuth()) {
+    return res.redirect(`${process.env.CLIENT_URL}/login?error=google_not_configured`);
+  }
+  return passport.authenticate('google', { scope: ['profile', 'email'], session: false })(req, res, next);
+});
 
-  router.get(
-    '/google/callback',
-    passport.authenticate('google', {
-      session: false,
-      failureRedirect: '/api/auth/google/failure'
-    }),
-    googleCallback
-  );
+router.get('/google/callback', (req, res, next) => {
+  if (!hasGoogleOAuth()) {
+    return res.redirect(`${process.env.CLIENT_URL}/login?error=google_not_configured`);
+  }
+  return passport.authenticate('google', {
+    session: false,
+    failureRedirect: '/api/auth/google/failure'
+  })(req, res, next);
+}, googleCallback);
 
-  router.get('/google/failure', (req, res) => oauthFailure(req, res, 'google'));
-}
+router.get('/google/failure', (req, res) => oauthFailure(req, res, 'google'));
 
-if (hasGitHubOAuth()) {
-  router.get(
-    '/github',
-    passport.authenticate('github', { scope: ['user:email'], session: false })
-  );
+// ---- GitHub OAuth ----
+router.get('/github', (req, res, next) => {
+  if (!hasGitHubOAuth()) {
+    return res.redirect(`${process.env.CLIENT_URL}/login?error=github_not_configured`);
+  }
+  return passport.authenticate('github', { scope: ['user:email'], session: false })(req, res, next);
+});
 
-  router.get(
-    '/github/callback',
-    passport.authenticate('github', {
-      session: false,
-      failureRedirect: '/api/auth/github/failure'
-    }),
-    githubCallback
-  );
+router.get('/github/callback', (req, res, next) => {
+  if (!hasGitHubOAuth()) {
+    return res.redirect(`${process.env.CLIENT_URL}/login?error=github_not_configured`);
+  }
+  return passport.authenticate('github', {
+    session: false,
+    failureRedirect: '/api/auth/github/failure'
+  })(req, res, next);
+}, githubCallback);
 
-  router.get('/github/failure', (req, res) => oauthFailure(req, res, 'github'));
-}
+router.get('/github/failure', (req, res) => oauthFailure(req, res, 'github'));
 
 export default router;

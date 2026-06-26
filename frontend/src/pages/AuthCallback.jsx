@@ -6,7 +6,9 @@ import LoadingSpinner from '../components/LoadingSpinner.jsx';
 const errorMessages = {
   google_auth_failed: 'Google authentication failed. Please try again.',
   github_auth_failed: 'GitHub authentication failed. Please try again.',
-  oauth_auth_failed: 'OAuth authentication failed. Please try again.'
+  oauth_auth_failed: 'OAuth authentication failed. Please try again.',
+  google_not_configured: 'Google login is not enabled on this server yet.',
+  github_not_configured: 'GitHub login is not enabled on this server yet.'
 };
 
 export default function AuthCallback() {

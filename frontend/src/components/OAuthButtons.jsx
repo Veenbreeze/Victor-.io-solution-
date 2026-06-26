@@ -1,29 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FaGithub } from 'react-icons/fa';
 import { SiGoogle } from 'react-icons/si';
 import { useAuth } from '../context/AuthContext.jsx';
-import { authService } from '../services/api.js';
 
 export default function OAuthButtons({ isLoading, disabled }) {
-  const { oauthError, clearOAuthError } = useAuth();
+  const { oauthError } = useAuth();
   const [localLoading, setLocalLoading] = useState(false);
-  const [providers, setProviders] = useState({ google: true, github: true });
   const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
   const backendOrigin = apiUrl.replace(/\/api\/?$/, '');
-
-  useEffect(() => {
-    authService
-      .providers()
-      .then(({ data }) => setProviders(data))
-      .catch(() => {});
-  }, []);
-
-  useEffect(() => {
-    if (oauthError) {
-      const timer = setTimeout(clearOAuthError, 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [oauthError, clearOAuthError]);
 
   const start = (provider) => {
     setLocalLoading(true);
@@ -31,10 +15,6 @@ export default function OAuthButtons({ isLoading, disabled }) {
   };
 
   const buttonDisabled = isLoading || disabled || localLoading;
-
-  if (!providers.google && !providers.github) {
-    return null;
-  }
 
   return (
     <div className="space-y-3">
@@ -45,28 +25,24 @@ export default function OAuthButtons({ isLoading, disabled }) {
       )}
 
       <div className="grid gap-3 sm:grid-cols-2">
-        {providers.google && (
-          <button
-            type="button"
-            onClick={() => start('google')}
-            disabled={buttonDisabled}
-            className="btn-oauth btn-google disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            <SiGoogle size={18} />
-            <span>{localLoading ? 'Redirecting…' : 'Google'}</span>
-          </button>
-        )}
-        {providers.github && (
-          <button
-            type="button"
-            onClick={() => start('github')}
-            disabled={buttonDisabled}
-            className="btn-oauth btn-github disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            <FaGithub size={18} />
-            <span>{localLoading ? 'Redirecting…' : 'GitHub'}</span>
-          </button>
-        )}
+        <button
+          type="button"
+          onClick={() => start('google')}
+          disabled={buttonDisabled}
+          className="btn-oauth btn-google disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          <SiGoogle size={18} />
+          <span>{localLoading ? 'Redirecting…' : 'Google'}</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => start('github')}
+          disabled={buttonDisabled}
+          className="btn-oauth btn-github disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          <FaGithub size={18} />
+          <span>{localLoading ? 'Redirecting…' : 'GitHub'}</span>
+        </button>
       </div>
 
       <div className="relative py-1">

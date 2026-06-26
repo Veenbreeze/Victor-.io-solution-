@@ -1,5 +1,4 @@
-import dotenv from 'dotenv';
-dotenv.config();
+import './config/loadEnv.js';
 
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -15,6 +14,7 @@ import serviceRoutes from './routes/serviceRoutes.js';
 import portfolioRoutes from './routes/portfolioRoutes.js';
 import messageRoutes from './routes/messageRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
+import eventRoutes from './routes/eventRoutes.js';
 
 import { errorHandler, notFoundHandler } from './middleware/errorMiddleware.js';
 import { validateEnv } from './config/env.js';
@@ -90,6 +90,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/services', serviceRoutes);
 app.use('/api/portfolio', portfolioRoutes);
+app.use('/api/events', eventRoutes);
 app.use('/api', messageRoutes);
 app.use('/api/admin', adminRoutes);
 
@@ -103,7 +104,11 @@ app.use(errorHandler);
    START SERVER
 ========================= */
 app.listen(PORT, '0.0.0.0', () => {
+  const dbUser = process.env.DB_USER || process.env.PGUSER || '(unset — pg will fall back to OS user!)';
+  const dbHost = process.env.DB_HOST || process.env.PGHOST || process.env.DATABASE_URL ? '(from DATABASE_URL)' : '(unset)';
   console.log(`Veenbreeze API running on port ${PORT} (${process.env.NODE_ENV || 'development'})`);
+  console.log(`  DB user: ${dbUser}`);
+  console.log(`  DB host: ${process.env.DB_HOST || dbHost}`);
 });
 
 process.on('unhandledRejection', (reason) => {

@@ -1,9 +1,16 @@
-import { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, Eye, EyeOff, LogIn, Mail, Lock } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
 import OAuthButtons from '../components/OAuthButtons.jsx';
 import { getErrorMessage } from '../utils/format.js';
+
+const oauthErrors = {
+  google_not_configured: 'Google login is not enabled on this server.',
+  github_not_configured: 'GitHub login is not enabled on this server.',
+  google_auth_failed: 'Google authentication failed. Please try again.',
+  github_auth_failed: 'GitHub authentication failed. Please try again.'
+};
 
 export default function Login() {
   const [form, setForm] = useState({ email: '', password: '' });
@@ -12,6 +19,12 @@ export default function Login() {
   const { login, loading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const errParam = searchParams.get('error');
+    if (errParam && oauthErrors[errParam]) setError(oauthErrors[errParam]);
+  }, [searchParams]);
 
   const submit = async (event) => {
     event.preventDefault();

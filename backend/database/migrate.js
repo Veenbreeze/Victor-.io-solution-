@@ -1,10 +1,8 @@
-import dotenv from 'dotenv';
+import '../config/loadEnv.js';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { pool } from '../config/db.js';
-
-dotenv.config();
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const schemaPath = path.join(__dirname, 'database.sql');

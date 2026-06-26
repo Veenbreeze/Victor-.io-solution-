@@ -54,6 +54,22 @@ CREATE TABLE IF NOT EXISTS messages (
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS events (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(180) NOT NULL,
+  description TEXT,
+  starts_at TIMESTAMP NOT NULL,
+  ends_at TIMESTAMP,
+  location VARCHAR(180),
+  link_url TEXT,
+  cover_url TEXT,
+  is_active BOOLEAN DEFAULT TRUE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS events_active_starts_idx ON events (is_active, starts_at);
+
 INSERT INTO services (title, slug, description, icon, price, is_featured) VALUES
   ('Web Development', 'web-development', 'Fast, responsive websites and web apps built for conversion, SEO, and long-term maintainability.', 'Globe2', 'From Tsh. 600,000', TRUE),
   ('System Development', 'system-development', 'Custom operational systems, dashboards, workflow automations, and secure business platforms.', 'ServerCog', 'From Tsh. 1,200,000', TRUE),
