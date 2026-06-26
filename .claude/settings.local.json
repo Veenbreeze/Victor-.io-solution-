@@ -11,7 +11,11 @@
       "Bash(node scripts/check-syntax.js)",
       "Bash(where psql *)",
       "Bash(where pg_isready)",
-      "Bash(pg_isready)"
+      "Bash(pg_isready)",
+      "Bash(curl -s -o /dev/null -w \"backend health: %{http_code}\\\\n\" http://localhost:5000/api/health)",
+      "Bash(netstat -ano)",
+      "Bash(\"C:/Program Files/PostgreSQL/17/bin/pg_isready.exe\" -h localhost -p 5432)",
+      "Bash(\"C:/Program Files/PostgreSQL/17/bin/pg_isready.exe\" -h 127.0.0.1 -p 5432)"
     ]
   }
 }
