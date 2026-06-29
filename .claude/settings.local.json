@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node --check server.js)",
+      "Bash(node --check config/db.js)",
+      "Bash(node --check config/passport.js)",
+      "Bash(node --check models/userModel.js)",
+      "Bash(node --check models/portfolioModel.js)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(node scripts/check-syntax.js)",
+      "Bash(where psql *)",
+      "Bash(where pg_isready)",
+      "Bash(pg_isready)",
+      "Bash(curl -s -o /dev/null -w \"backend health: %{http_code}\\\\n\" http://localhost:5000/api/health)",
+      "Bash(netstat -ano)",
+      "Bash(\"C:/Program Files/PostgreSQL/17/bin/pg_isready.exe\" -h localhost -p 5432)",
+      "Bash(\"C:/Program Files/PostgreSQL/17/bin/pg_isready.exe\" -h 127.0.0.1 -p 5432)",
+      "Bash(node -e \"import\\('./backend/config/loadEnv.js'\\).then\\(\\(\\)=>console.log\\('DB_USER:', process.env.DB_USER, '| DB_NAME:', process.env.DB_NAME, '| DB_HOST:', process.env.DB_HOST\\)\\)\")",
+      "Read(//c/Program Files/PostgreSQL/17/data/**)",
+      "Bash(\"C:/Program Files/PostgreSQL/17/bin/psql.exe\" -V)",
+      "Bash(PGPASSWORD=anything C:/Program Files/PostgreSQL/17/bin/psql.exe *)",
+      "Bash(PGPASSWORD=anything \"C:/Program Files/PostgreSQL/17/bin/createdb.exe\" -h 127.0.0.1 -U postgres veenbreeze)",
+      "Bash(PGPASSWORD=anything \"C:/Program Files/PostgreSQL/17/bin/psql.exe\" -h 127.0.0.1 -U postgres -d veenbreeze -c \"SELECT id, name, email, role FROM users;\")",
+      "Bash(PGPASSWORD=anything \"C:/Program Files/PostgreSQL/17/bin/psql.exe\" -h 127.0.0.1 -U postgres -d veenbreeze -c \"SELECT count\\(*\\) AS service_count FROM services;\")",
+      "Bash(curl -s http://localhost:5000/api/health)",
+      "Bash(curl -s -X POST http://localhost:5000/api/auth/login -H \"Content-Type: application/json\" -d '{\"email\":\"admin@veenbreeze.com\",\"password\":\"AdminPass123\"}')",
+      "Bash(curl -s -X POST http://localhost:5000/api/auth/register -H \"Content-Type: application/json\" -d '{\"name\":\"Test User\",\"email\":\"test@example.com\",\"password\":\"password123\"}')",
+      "Bash(curl -s http://localhost:5000/api/services)",
+      "Bash(curl -s http://localhost:5000/api/auth/providers)",
+      "Bash(curl -s -o /dev/null -w \"frontend: %{http_code}\\\\n\" http://localhost:5173/)",
+      "PowerShell(Get-NetTCPConnection *)"
+    ]
+  }
+}

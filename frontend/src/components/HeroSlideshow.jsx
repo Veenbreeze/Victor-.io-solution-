@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Sparkles, Star } from 'lucide-react';
 
 import cons1 from '../assets/cons1.jpeg';
 import cons3 from '../assets/cons3.jpeg';
@@ -9,23 +9,13 @@ import cons4 from '../assets/cons4.jpeg';
 import cons5 from '../assets/cons5.jpeg';
 
 const slides = [
-  {
-    image: cons1,
-    label: 'Full stack delivery'
-  },
-  {
-    image: cons5,
-    label: 'Modern digital studios'
-  },
-  {
-    image: cons3,
-    label: 'Strategy, systems, and launch'
-  },
-  {
-    image: cons4,
-    label: 'Creative business solutions'
-  }
+  { image: cons1, label: 'Full-stack delivery', tagline: 'Web, systems & APIs' },
+  { image: cons5, label: 'Modern digital studio', tagline: 'Design that converts' },
+  { image: cons3, label: 'Strategy, systems, launch', tagline: 'From idea to production' },
+  { image: cons4, label: 'Creative business solutions', tagline: 'Built for growth' }
 ];
+
+const trustBadges = ['React', 'Node.js', 'PostgreSQL', 'Django', 'Tailwind', 'Vercel'];
 
 export default function HeroSlideshow() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -33,8 +23,7 @@ export default function HeroSlideshow() {
   useEffect(() => {
     const timer = setInterval(() => {
       setActiveIndex((current) => (current + 1) % slides.length);
-    }, 3000);
-
+    }, 5000);
     return () => clearInterval(timer);
   }, []);
 
@@ -48,16 +37,19 @@ export default function HeroSlideshow() {
           src={activeSlide.image}
           alt={activeSlide.label}
           className="absolute inset-0 -z-20 h-full w-full object-cover"
-          initial={{ opacity: 0, scale: 1.04 }}
+          initial={{ opacity: 0, scale: 1.06 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 1.02 }}
-          transition={{ duration: 1.1, ease: 'easeInOut' }}
+          transition={{ duration: 1.2, ease: 'easeInOut' }}
         />
       </AnimatePresence>
 
-      <div className="absolute inset-0 -z-10 bg-slate-950/70" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-slate-950/55 via-slate-950/75 to-slate-950" />
+      <div className="absolute inset-0 -z-10 bg-mesh opacity-50 mix-blend-overlay" />
+      <div className="absolute inset-0 -z-10 bg-grid opacity-20" />
 
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_20%,rgba(6,182,212,0.22),transparent_34%),radial-gradient(circle_at_80%_30%,rgba(245,184,75,0.16),transparent_30%)]" />
+      <div className="absolute -left-32 top-32 -z-10 h-72 w-72 rounded-full bg-brand-500/30 blur-3xl" />
+      <div className="absolute -right-24 bottom-24 -z-10 h-80 w-80 rounded-full bg-indigo-500/25 blur-3xl" />
 
       <div className="container-pad flex min-h-[calc(100vh-80px)] items-center py-20">
         <motion.div
@@ -66,62 +58,90 @@ export default function HeroSlideshow() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: 'easeOut' }}
         >
-          <motion.p
-            className="mb-5 inline-flex rounded-md border border-brand-300/40 bg-white/10 px-4 py-2 text-sm font-bold text-brand-50 backdrop-blur-md"
+          <motion.span
+            className="badge mb-6 border-white/20 bg-white/10 text-white backdrop-blur"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.1 }}
+            transition={{ duration: 0.5, delay: 0.05 }}
           >
-            {activeSlide.label}
-          </motion.p>
+            <Sparkles size={14} className="text-brand-200" /> {activeSlide.tagline}
+          </motion.span>
 
           <motion.h1
-            className="max-w-5xl text-5xl font-black tracking-normal sm:text-7xl"
+            className="font-display max-w-5xl text-5xl font-black leading-[1.05] tracking-tight sm:text-7xl"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, delay: 0.18 }}
+            transition={{ duration: 0.7, delay: 0.15 }}
           >
-            Transforming Ideas Into Digital Solutions
+            Transforming ideas into{' '}
+            <span className="bg-gradient-to-br from-brand-200 via-brand-400 to-indigo-300 bg-clip-text text-transparent">
+              digital solutions
+            </span>
           </motion.h1>
 
           <motion.p
-            className="mt-6 max-w-2xl text-lg font-semibold leading-8 text-slate-200"
+            className="mt-6 max-w-2xl text-lg leading-8 text-slate-200/90"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, delay: 0.26 }}
+            transition={{ duration: 0.65, delay: 0.25 }}
           >
-            Web Development • Systems • Creative Solutions
+            A boutique studio building production-ready websites, business systems, and creative
+            growth assets — for founders, freelancers, and teams ready to ship.
           </motion.p>
 
           <motion.div
             className="mt-8 flex flex-col gap-3 sm:flex-row"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, delay: 0.34 }}
+            transition={{ duration: 0.65, delay: 0.35 }}
           >
             <Link className="btn-primary" to="/services">
-              Explore Services <ArrowRight size={18} />
+              Explore services <ArrowRight size={18} />
             </Link>
-
             <Link
               className="btn-secondary border-white/20 bg-white/10 text-white hover:text-white"
               to="/portfolio"
             >
-              View Portfolio
+              View portfolio
             </Link>
+          </motion.div>
+
+          <motion.div
+            className="mt-10 flex flex-wrap items-center gap-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.7, delay: 0.5 }}
+          >
+            <div className="flex items-center gap-1.5">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} size={16} className="fill-gold text-gold" />
+              ))}
+              <span className="ml-2 text-sm font-semibold text-slate-200">
+                Trusted across 3 continents
+              </span>
+            </div>
+            <div className="h-4 w-px bg-white/20" />
+            <div className="flex flex-wrap gap-2">
+              {trustBadges.map((b) => (
+                <span
+                  key={b}
+                  className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-semibold text-slate-200 backdrop-blur"
+                >
+                  {b}
+                </span>
+              ))}
+            </div>
           </motion.div>
         </motion.div>
       </div>
 
-      <div className="container-pad absolute bottom-8 left-1/2 z-10 -translate-x-1/2">
+      <div className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2">
         <div className="flex gap-2">
           {slides.map((slide, index) => (
             <button
               key={slide.label}
               className={`h-1.5 rounded-full transition-all ${
-                index === activeIndex
-                  ? 'w-10 bg-brand-100'
-                  : 'w-4 bg-white/40 hover:bg-white/70'
+                index === activeIndex ? 'w-10 bg-brand-200' : 'w-4 bg-white/40 hover:bg-white/70'
               }`}
               onClick={() => setActiveIndex(index)}
               aria-label={`Show ${slide.label}`}

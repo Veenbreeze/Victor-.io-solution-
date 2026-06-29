@@ -1,28 +1,39 @@
+databases:
+  - name: veenbreeze-postgres
+    plan: free
+    databaseName: veenbreeze
+    user: veenbreeze
+
 services:
   - type: web
     name: veenbreeze-solutions-api
     env: node
     plan: free
     rootDir: backend
-    autoDeploy: false
-    buildCommand: npm install
+    autoDeploy: true
+    buildCommand: npm ci && npm run db:migrate
     startCommand: npm start
+    healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
         value: 10000
-      - key: DB_HOST
-        sync: false
-      - key: DB_PORT
-        sync: false
-      - key: DB_USER
-        sync: false
-      - key: DB_PASSWORD
-        sync: false
-      - key: DB_NAME
-        sync: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: veenbreeze-postgres
+          property: connectionString
       - key: JWT_SECRET
         generateValue: true
       - key: CLIENT_URL
+        sync: false
+      - key: BACKEND_URL
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: GITHUB_CLIENT_ID
+        sync: false
+      - key: GITHUB_CLIENT_SECRET
         sync: false

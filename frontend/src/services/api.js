@@ -26,7 +26,9 @@ api.interceptors.response.use(
 
 export const authService = {
   register: (payload) => api.post('/auth/register', payload),
-  login: (payload) => api.post('/auth/login', payload)
+  login: (payload) => api.post('/auth/login', payload),
+  providers: () => api.get('/auth/providers'),
+  me: () => api.get('/users/me')
 };
 
 export const serviceService = {
@@ -57,6 +59,14 @@ export const messageService = {
 
 export const adminService = {
   stats: () => api.get('/admin/stats')
+};
+
+export const eventService = {
+  list: () => api.get('/events'),
+  upcoming: (limit = 5) => api.get('/events/upcoming', { params: { limit } }),
+  create: (payload) => api.post('/events', payload),
+  update: (id, payload) => api.put(`/events/${id}`, payload),
+  remove: (id) => api.delete(`/events/${id}`)
 };
 
 export default api;

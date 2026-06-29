@@ -1,15 +1,17 @@
 import { pool } from '../config/db.js';
 
 export async function getStats() {
-  const [[users]] = await pool.execute('SELECT COUNT(*) AS total FROM users');
-  const [[services]] = await pool.execute('SELECT COUNT(*) AS total FROM services');
-  const [[portfolio]] = await pool.execute('SELECT COUNT(*) AS total FROM portfolio');
-  const [[messages]] = await pool.execute('SELECT COUNT(*) AS total FROM messages');
+  const [usersRes, servicesRes, portfolioRes, messagesRes] = await Promise.all([
+    pool.query('SELECT COUNT(*)::int AS total FROM users'),
+    pool.query('SELECT COUNT(*)::int AS total FROM services'),
+    pool.query('SELECT COUNT(*)::int AS total FROM portfolio'),
+    pool.query('SELECT COUNT(*)::int AS total FROM messages')
+  ]);
 
   return {
-    users: users.total,
-    services: services.total,
-    portfolio: portfolio.total,
-    messages: messages.total
+    users: usersRes.rows[0].total,
+    services: servicesRes.rows[0].total,
+    portfolio: portfolioRes.rows[0].total,
+    messages: messagesRes.rows[0].total
   };
 }

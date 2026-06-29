@@ -8,131 +8,82 @@ import {
   createOAuthUser,
   updateUserProvider
 } from '../models/userModel.js';
+import { hasGoogleOAuth, hasGitHubOAuth } from './env.js';
 
-const BACKEND_URL =
-  process.env.BACKEND_URL || 'http://localhost:5000';
+const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:5000';
 
-/* =========================
-   GOOGLE STRATEGY
-========================= */
+async function resolveOAuthUser({ provider, providerId, displayName, email, avatar }) {
+  let user = await findUserByProvider(provider, providerId);
+  if (user) return user;
 
-passport.use(
-  new GoogleStrategy(
-    {
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-
-      callbackURL: `${BACKEND_URL}/api/auth/google/callback`
-    },
-    async (accessToken, refreshToken, profile, done) => {
-      try {
-
-        const email = profile.emails?.[0]?.value;
-        const providerId = profile.id;
-
-        let user = await findUserByProvider('google', providerId);
-
-        if (user) return done(null, user);
-
-        if (email) {
-          const existingUser = await findUserByEmail(email);
-
-          if (existingUser) {
-            await updateUserProvider(
-              existingUser.id,
-              'google',
-              providerId
-            );
-
-            return done(null, existingUser);
-          }
-        }
-
-        const newUser = await createOAuthUser({
-          name: profile.displayName || 'Google User',
-          email:
-            email ||
-            `google-${providerId}@oauth.local`,
-          provider: 'google',
-          providerId,
-          avatar: profile.photos?.[0]?.value
-        });
-
-        done(null, newUser);
-
-      } catch (err) {
-        done(err);
-      }
+  if (email) {
+    const existingUser = await findUserByEmail(email);
+    if (existingUser) {
+      await updateUserProvider(existingUser.id, provider, providerId);
+      return existingUser;
     }
-  )
-);
+  }
 
-/* =========================
-   GITHUB STRATEGY
-========================= */
+  return createOAuthUser({
+    name: displayName,
+    email: email || `${provider}-${providerId}@oauth.local`,
+    provider,
+    providerId,
+    avatar
+  });
+}
 
-passport.use(
-  new GitHubStrategy(
-    {
-      clientID: process.env.GITHUB_CLIENT_ID,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET,
-
-      callbackURL: `${BACKEND_URL}/api/auth/github/callback`,
-
-      scope: ['user:email']
-    },
-    async (accessToken, refreshToken, profile, done) => {
-      try {
-
-        const email = profile.emails?.[0]?.value;
-        const providerId = profile.id.toString();
-
-        let user = await findUserByProvider(
-          'github',
-          providerId
-        );
-
-        if (user) return done(null, user);
-
-        if (email) {
-
-          const existingUser =
-            await findUserByEmail(email);
-
-          if (existingUser) {
-
-            await updateUserProvider(
-              existingUser.id,
-              'github',
-              providerId
-            );
-
-            return done(null, existingUser);
-          }
+if (hasGoogleOAuth()) {
+  passport.use(
+    new GoogleStrategy(
+      {
+        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        callbackURL: `${BACKEND_URL}/api/auth/google/callback`
+      },
+      async (_accessToken, _refreshToken, profile, done) => {
+        try {
+          const user = await resolveOAuthUser({
+            provider: 'google',
+            providerId: profile.id,
+            displayName: profile.displayName || 'Google User',
+            email: profile.emails?.[0]?.value,
+            avatar: profile.photos?.[0]?.value
+          });
+          done(null, user);
+        } catch (err) {
+          done(err);
         }
-
-        const newUser = await createOAuthUser({
-          name:
-            profile.displayName ||
-            profile.username ||
-            'GitHub User',
-
-          email:
-            email ||
-            `github-${providerId}@oauth.local`,
-
-          provider: 'github',
-          providerId,
-          avatar: profile.photos?.[0]?.value
-        });
-
-        done(null, newUser);
-
-      } catch (err) {
-        done(err);
       }
-    }
-  )
-);
+    )
+  );
+}
+
+if (hasGitHubOAuth()) {
+  passport.use(
+    new GitHubStrategy(
+      {
+        clientID: process.env.GITHUB_CLIENT_ID,
+        clientSecret: process.env.GITHUB_CLIENT_SECRET,
+        callbackURL: `${BACKEND_URL}/api/auth/github/callback`,
+        scope: ['user:email']
+      },
+      async (_accessToken, _refreshToken, profile, done) => {
+        try {
+          const user = await resolveOAuthUser({
+            provider: 'github',
+            providerId: String(profile.id),
+            displayName: profile.displayName || profile.username || 'GitHub User',
+            email: profile.emails?.[0]?.value,
+            avatar: profile.photos?.[0]?.value
+          });
+          done(null, user);
+        } catch (err) {
+          done(err);
+        }
+      }
+    )
+  );
+}
 
 export default passport;

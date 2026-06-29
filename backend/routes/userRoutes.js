@@ -5,6 +5,8 @@ import { authorize, protect } from '../middleware/authMiddleware.js';
 const router = Router();
 
 router.use(protect);
+
+router.get('/me', (req, res) => res.json(req.user));
 router.get('/', authorize('admin'), getUsers);
 router.get('/:id', getUser);
 router.put('/:id', authorize('admin'), editUser);

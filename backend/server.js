@@ -1,50 +1,98 @@
-import dotenv from 'dotenv';
-dotenv.config(); // 🔥 MUST BE FIRST
+import './config/loadEnv.js';
 
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import express from 'express';
 import cors from 'cors';
+import helmet from 'helmet';
+import morgan from 'morgan';
 import passport from './config/passport.js';
 
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import serviceRoutes from './routes/serviceRoutes.js';
+import portfolioRoutes from './routes/portfolioRoutes.js';
+import messageRoutes from './routes/messageRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
+import eventRoutes from './routes/eventRoutes.js';
 
 import { errorHandler, notFoundHandler } from './middleware/errorMiddleware.js';
 import { validateEnv } from './config/env.js';
+import { pool } from './config/db.js';
 
 validateEnv();
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = Number(process.env.PORT) || 5000;
+
+/* =========================
+   SECURITY + LOGGING
+========================= */
+app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
+app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 
 /* =========================
    CORS
 ========================= */
+const allowedOrigins = (process.env.CLIENT_URL || 'http://localhost:5173')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:5173',
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin) || allowedOrigins.includes('*')) {
+        return callback(null, true);
+      }
+      return callback(new Error(`CORS rejected for origin: ${origin}`));
+    },
     credentials: true
   })
 );
 
-app.use(express.json());
+app.use(express.json({ limit: '5mb' }));
+app.use(express.urlencoded({ extended: true }));
 
 /* =========================
-   PASSPORT INIT
+   PASSPORT
 ========================= */
 app.use(passport.initialize());
 
 /* =========================
-   ROUTES
+   STATIC UPLOADS
 ========================= */
-app.use('/api/auth', authRoutes);
-app.use('/api/users', userRoutes);
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 /* =========================
-   HEALTH CHECK
+   ROUTES
 ========================= */
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok' });
+app.get('/', (_req, res) => {
+  res.json({
+    name: 'Veenbreeze Solutions API',
+    status: 'ok',
+    docs: '/api/health'
+  });
 });
+
+app.get('/api/health', async (_req, res) => {
+  try {
+    await pool.query('SELECT 1');
+    res.json({ status: 'ok', database: 'connected', timestamp: new Date().toISOString() });
+  } catch (err) {
+    res.status(503).json({ status: 'degraded', database: 'disconnected', error: err.message });
+  }
+});
+
+app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/services', serviceRoutes);
+app.use('/api/portfolio', portfolioRoutes);
+app.use('/api/events', eventRoutes);
+app.use('/api', messageRoutes);
+app.use('/api/admin', adminRoutes);
 
 /* =========================
    ERROR HANDLERS
@@ -55,19 +103,14 @@ app.use(errorHandler);
 /* =========================
    START SERVER
 ========================= */
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  const dbUser = process.env.DB_USER || process.env.PGUSER || '(unset — pg will fall back to OS user!)';
+  const dbHost = process.env.DB_HOST || process.env.PGHOST || process.env.DATABASE_URL ? '(from DATABASE_URL)' : '(unset)';
+  console.log(`Veenbreeze API running on port ${PORT} (${process.env.NODE_ENV || 'development'})`);
+  console.log(`  DB user: ${dbUser}`);
+  console.log(`  DB host: ${process.env.DB_HOST || dbHost}`);
 });
-// Debugging: Log critical environment variables
-console.log(
-   "GOOGLE_CLIENT_ID:",
-   process.env.GOOGLE_CLIENT_ID || "MISSING"
-);
-console.log(
-   "GOOGLE_CLIENT_SECRET:",
-   process.env.GOOGLE_CLIENT_SECRET || "MISSING"
-);
-console.log(
-   "JWT_SECRET:",
-   process.env.JWT_SECRET || "MISSING"
-);
+
+process.on('unhandledRejection', (reason) => {
+  console.error('Unhandled rejection:', reason);
+});
