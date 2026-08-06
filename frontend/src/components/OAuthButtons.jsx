@@ -50,7 +50,7 @@ export default function OAuthButtons({ isLoading, disabled }) {
           <div className="w-full border-t border-slate-200 dark:border-slate-700" />
         </div>
         <div className="relative flex justify-center">
-          <span className="bg-white px-3 text-xs font-semibold uppercase tracking-widest text-slate-500 dark:bg-slate-900 dark:text-slate-400">
+          <span className="bg-[var(--clay-surface)] px-3 text-xs font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400">
             or continue with email
           </span>
         </div>

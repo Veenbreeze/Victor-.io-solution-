@@ -73,12 +73,12 @@ export default function Home() {
       <section className="relative -mt-16 pb-12">
         <div className="container-pad">
           <motion.div
-            className="grid gap-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-soft dark:border-slate-800 dark:bg-slate-900 sm:grid-cols-2 lg:grid-cols-4"
+            className="clay grid gap-4 rounded-clay p-6 sm:grid-cols-2 lg:grid-cols-4"
             {...fadeUp}
           >
             {stats.map(({ value, label, icon: Icon }) => (
               <div key={label} className="flex items-center gap-4 p-2">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-50 text-brand-700 dark:bg-brand-900/40 dark:text-brand-200">
+                <div className="clay-pressed flex h-12 w-12 items-center justify-center rounded-clay-sm text-brand-700 dark:text-brand-200">
                   <Icon size={22} />
                 </div>
                 <div>
@@ -174,7 +174,7 @@ export default function Home() {
       </section>
 
       {/* Process */}
-      <section className="bg-white py-20 dark:bg-slate-950">
+      <section className="py-20">
         <div className="container-pad">
           <motion.div {...fadeUp}>
             <SectionHeader
@@ -197,7 +197,7 @@ export default function Home() {
                 <span className="absolute right-6 top-6 text-3xl font-black text-slate-100 dark:text-slate-800">
                   {p.step}
                 </span>
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-gradient text-white shadow-glow">
+                <div className="clay-bubble h-12 w-12">
                   <Sparkles size={20} />
                 </div>
                 <h3 className="mt-5 text-lg font-bold text-slate-950 dark:text-white">{p.title}</h3>
@@ -223,7 +223,7 @@ export default function Home() {
       </section>
 
       {/* GitHub */}
-      <section className="bg-white py-20 dark:bg-slate-950">
+      <section className="py-20">
         <div className="container-pad">
           <motion.div {...fadeUp}>
             <SectionHeader
@@ -277,7 +277,7 @@ export default function Home() {
       </section>
 
       {/* Pricing */}
-      <section className="bg-white py-20 dark:bg-slate-950">
+      <section className="py-20">
         <div className="container-pad">
           <motion.div {...fadeUp}>
             <SectionHeader centered eyebrow="Pricing" title="Simple starting points, flexible execution." />
@@ -290,14 +290,25 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-60px' }}
                 transition={{ duration: 0.5, delay: i * 0.1, ease: 'easeOut' }}
-                className={`relative rounded-2xl border p-7 transition hover:-translate-y-1 hover:shadow-xl ${
+                className={`relative rounded-clay p-7 transition duration-300 hover:-translate-y-1.5 ${
                   plan.featured
-                    ? 'border-brand-500 bg-brand-gradient text-white shadow-glow'
-                    : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900'
+                    ? 'bg-brand-gradient text-white'
+                    : 'clay text-slate-900 dark:text-white'
                 }`}
+                style={
+                  plan.featured
+                    ? {
+                        boxShadow:
+                          '-9px -9px 18px rgba(255,255,255,0.25), 9px 9px 22px rgba(8,60,78,0.5)'
+                      }
+                    : undefined
+                }
               >
                 {plan.featured && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gold px-3 py-1 text-xs font-black uppercase tracking-widest text-slate-900 shadow">
+                  <span
+                    className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gold px-3 py-1 text-xs font-black uppercase tracking-widest text-slate-900"
+                    style={{ boxShadow: '-4px -4px 8px rgba(255,255,255,0.4), 4px 4px 10px rgba(120,90,10,0.35)' }}
+                  >
                     Most popular
                   </span>
                 )}
@@ -319,11 +330,11 @@ export default function Home() {
                 </div>
                 <Link
                   to="/contact"
-                  className={`mt-8 inline-flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-bold transition ${
+                  className={
                     plan.featured
-                      ? 'bg-white text-brand-700 hover:bg-brand-50'
-                      : 'border border-slate-200 text-slate-900 hover:border-brand-500 hover:text-brand-700 dark:border-slate-700 dark:text-white'
-                  }`}
+                      ? 'mt-8 inline-flex w-full items-center justify-center gap-2 rounded-clay-sm bg-white px-4 py-3 text-sm font-bold text-brand-700 transition hover:-translate-y-0.5'
+                      : 'btn-secondary mt-8 w-full'
+                  }
                 >
                   Choose {plan.name} <ArrowRight size={14} />
                 </Link>
@@ -336,7 +347,7 @@ export default function Home() {
       {/* CTA */}
       <section className="py-20">
         <div className="container-pad">
-          <motion.div className="relative overflow-hidden rounded-3xl bg-slate-950 p-10 text-white shadow-2xl md:p-14" {...fadeUp}>
+          <motion.div className="relative overflow-hidden rounded-clay-lg bg-slate-950 p-10 text-white shadow-2xl md:p-14" {...fadeUp}>
             <div className="absolute inset-0 bg-mesh opacity-70" />
             <div className="absolute inset-0 bg-grid opacity-25" />
             <div className="absolute -right-10 -top-10 h-48 w-48 rounded-full bg-brand-500/30 blur-3xl" />
@@ -356,7 +367,7 @@ export default function Home() {
                 <Link to="/contact" className="btn-primary">
                   Book a consult <Zap size={18} />
                 </Link>
-                <Link to="/services" className="btn-secondary border-white/20 bg-white/10 text-white hover:text-white">
+                <Link to="/services" className="inline-flex items-center justify-center gap-2 rounded-clay-sm border border-white/20 bg-white/10 px-6 py-3.5 text-sm font-bold text-white backdrop-blur transition hover:-translate-y-0.5 hover:bg-white/15">
                   See services
                 </Link>
               </div>

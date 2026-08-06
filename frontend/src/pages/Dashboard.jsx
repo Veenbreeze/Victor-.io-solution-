@@ -72,11 +72,11 @@ export default function Dashboard() {
   return (
     <section className="py-12">
       <div className="container-pad space-y-10">
-        <div className="relative overflow-hidden rounded-3xl bg-slate-950 p-8 text-white md:p-12">
+        <div className="relative overflow-hidden rounded-clay-lg bg-slate-950 p-8 text-white md:p-12">
           <div className="absolute inset-0 bg-mesh opacity-60" />
           <div className="absolute inset-0 bg-grid opacity-30" />
           <div className="relative">
-            <span className="badge border-white/20 bg-white/10 text-white">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 text-xs font-bold text-white backdrop-blur">
               <Sparkles size={14} /> Welcome
             </span>
             <h1 className="mt-5 text-3xl font-black tracking-tight sm:text-4xl">
@@ -90,7 +90,7 @@ export default function Dashboard() {
               <Link to="/services" className="btn-primary">
                 Explore services <ArrowUpRight size={16} />
               </Link>
-              <Link to="/portfolio" className="btn-secondary border-white/20 bg-white/10 text-white hover:text-white">
+              <Link to="/portfolio" className="inline-flex items-center justify-center gap-2 rounded-clay-sm border border-white/20 bg-white/10 px-6 py-3.5 text-sm font-bold text-white backdrop-blur transition hover:-translate-y-0.5 hover:bg-white/15">
                 View portfolio
               </Link>
             </div>

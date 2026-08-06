@@ -30,11 +30,11 @@ export default function MainLayout() {
   const dashboardPath = isAdmin ? '/admin' : '/dashboard';
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-[#050a17] dark:text-white">
-      <header className="sticky top-0 z-50 border-b border-slate-200/70 bg-white/80 backdrop-blur-xl dark:border-white/5 dark:bg-slate-950/70">
-        <nav className="container-pad flex h-20 items-center justify-between">
+    <div className="min-h-screen text-slate-900 dark:text-white" style={{ background: 'var(--clay-bg)' }}>
+      <header className="sticky top-0 z-50 px-3 pt-3">
+        <nav className="clay container-pad flex items-center justify-between rounded-clay-sm py-3">
           <Link to="/" className="flex items-center gap-3" onClick={() => setOpen(false)}>
-            <span className="flex h-11 w-11 items-center justify-center rounded-md bg-brand-600 text-lg font-black text-white">VIS</span>
+            <span className="clay-bubble h-11 w-11 text-lg">VIS</span>
             <span>
               <span className="block text-sm font-black uppercase tracking-wide text-slate-950 dark:text-white">Victor.io</span>
               <span className="block text-xs font-semibold text-brand-700 dark:text-brand-100">Solutions</span>
@@ -96,8 +96,8 @@ export default function MainLayout() {
         </nav>
 
         {open && (
-          <div className="container-pad border-t border-slate-200 pb-5 dark:border-slate-800 lg:hidden">
-            <div className="grid gap-2 pt-4">
+          <div className="container-pad pb-5 pt-3 lg:hidden">
+            <div className="clay grid gap-2 rounded-clay-sm p-4">
               {navItems.map(([label, path]) => (
                 <NavLink
                   key={path}

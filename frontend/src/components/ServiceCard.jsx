@@ -20,11 +20,8 @@ export default function ServiceCard({ service, index = 0 }) {
         <article
           className="
             absolute inset-0
-            glass rounded-2xl p-6
-            border border-slate-200
-            shadow-lg
+            glass
             [backface-visibility:hidden]
-            dark:border-slate-800
           "
         >
           <div className="mb-4 flex items-center justify-between">
@@ -33,7 +30,7 @@ export default function ServiceCard({ service, index = 0 }) {
             </span>
 
             {Icon && (
-              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-brand-50 text-brand-700 dark:bg-brand-900/40 dark:text-brand-100">
+              <div className="clay-pressed flex h-14 w-14 items-center justify-center rounded-clay-sm text-brand-700 dark:text-brand-100">
                 <Icon size={28} />
               </div>
             )}
@@ -56,7 +53,7 @@ export default function ServiceCard({ service, index = 0 }) {
         <article
           className="
             absolute inset-0
-            rounded-2xl
+            rounded-clay
             bg-slate-950
             p-6
             text-white
@@ -74,7 +71,7 @@ export default function ServiceCard({ service, index = 0 }) {
               <p className="font-bold text-brand-300">{service.price}</p>
               <a
                 href="/contact"
-                className="mt-4 inline-flex w-full items-center justify-center rounded-lg bg-brand-600 px-4 py-3 font-semibold text-white transition hover:bg-brand-700"
+                className="mt-4 inline-flex w-full items-center justify-center rounded-clay-sm bg-brand-600 px-4 py-3 font-semibold text-white transition hover:bg-brand-700"
               >
                 Request quote
               </a>

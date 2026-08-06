@@ -18,7 +18,7 @@ export default function NotFound() {
           <Link to="/" className="btn-primary">
             <Home size={18} /> Return home
           </Link>
-          <Link to="/contact" className="btn-secondary border-white/20 bg-white/10 text-white hover:text-white">
+          <Link to="/contact" className="inline-flex items-center justify-center gap-2 rounded-clay-sm border border-white/20 bg-white/10 px-6 py-3.5 text-sm font-bold text-white backdrop-blur transition hover:-translate-y-0.5 hover:bg-white/15">
             <ArrowLeft size={18} /> Contact support
           </Link>
         </div>

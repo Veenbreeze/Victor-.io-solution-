@@ -19,14 +19,12 @@ const socialLinks = [
 
 export default function Footer() {
   return (
-    <footer className="border-t border-slate-200 bg-white pt-16 pb-8 dark:border-slate-800 dark:bg-slate-950">
+    <footer className="pt-16 pb-8" style={{ background: 'var(--clay-bg)' }}>
       <div className="container-pad">
         <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr_1fr]">
           <div>
             <Link to="/" className="inline-flex items-center gap-3">
-              <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-brand-gradient text-base font-black text-white shadow-glow">
-                VIS
-              </span>
+              <span className="clay-bubble h-11 w-11 text-base">VIS</span>
               <span className="font-black uppercase tracking-wide text-slate-950 dark:text-white">
                 Victor.io Solutions
               </span>
@@ -73,7 +71,7 @@ export default function Footer() {
                   href={href}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 text-slate-600 transition hover:-translate-y-1 hover:border-brand-500 hover:bg-brand-50 hover:text-brand-700 dark:border-slate-800 dark:text-slate-300 dark:hover:border-brand-400 dark:hover:bg-slate-900 dark:hover:text-brand-100"
+                  className="clay flex h-11 w-11 items-center justify-center rounded-clay-sm text-slate-600 transition hover:-translate-y-1 hover:text-brand-700 dark:text-slate-300 dark:hover:text-brand-100"
                   aria-label={label}
                 >
                   <Icon size={19} />

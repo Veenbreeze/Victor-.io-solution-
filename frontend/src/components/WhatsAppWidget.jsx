@@ -39,7 +39,7 @@ function WhatsAppWidget() {
       {/* CHAT BOX */}
 
       {open && (
-        <div className="mb-4 w-[350px] rounded-3xl overflow-hidden shadow-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 animate-in slide-in-from-bottom duration-300">
+        <div className="clay mb-4 w-[350px] overflow-hidden rounded-clay animate-in slide-in-from-bottom duration-300">
 
           {/* HEADER */}
 

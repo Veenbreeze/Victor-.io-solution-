@@ -62,7 +62,7 @@ export default function GitHubProjects() {
 
   if (!repositories.length) {
     return (
-      <div className="rounded-2xl border border-slate-200 bg-white p-8 text-center text-sm font-semibold text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">
+      <div className="clay rounded-clay p-8 text-center text-sm font-semibold text-slate-600 dark:text-slate-300">
         No public repositories found for{' '}
         <a
           href={`https://github.com/${username}`}

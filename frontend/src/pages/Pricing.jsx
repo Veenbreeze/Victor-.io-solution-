@@ -16,11 +16,14 @@ export default function Pricing() {
           {pricingPlans.map((plan) => (
             <article
               key={plan.name}
-              className={`rounded-lg border p-6 ${
-                plan.featured
-                  ? 'border-brand-500 bg-brand-600 text-white shadow-glow'
-                  : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900'
+              className={`rounded-clay p-6 transition duration-300 hover:-translate-y-1.5 ${
+                plan.featured ? 'bg-brand-gradient text-white' : 'clay text-slate-900 dark:text-white'
               }`}
+              style={
+                plan.featured
+                  ? { boxShadow: '-9px -9px 18px rgba(255,255,255,0.25), 9px 9px 22px rgba(8,60,78,0.5)' }
+                  : undefined
+              }
             >
               <h2 className="text-xl font-black">{plan.name}</h2>
               <p className="mt-4 text-4xl font-black">{plan.price}</p>
