@@ -7,3 +7,4 @@ dist/
 npm-debug.log*
 uploads/*
 !uploads/.gitkeep
+.claude/settings.local.json
