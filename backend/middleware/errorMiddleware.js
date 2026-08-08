@@ -5,6 +5,10 @@ export function notFoundHandler(req, res, next) {
 }
 
 export function errorHandler(err, _req, res, _next) {
+  if (err.code === '23505') {
+    return res.status(409).json({ message: 'A record with this value already exists.' });
+  }
+
   const statusCode = err.statusCode || 500;
   res.status(statusCode).json({
     message: err.message || 'Internal server error',

@@ -83,7 +83,11 @@ export async function updateUser(id, payload) {
   return findUserById(id);
 }
 
+export async function updateUserPassword(id, passwordHash) {
+  await pool.query('UPDATE users SET password = $1, updated_at = NOW() WHERE id = $2', [passwordHash, id]);
+}
+
 export async function deleteUser(id) {
-  const result = await pool.query('DELETE FROM users WHERE id = $1', [id]);
-  return result.rowCount > 0;
+  const { rows } = await pool.query(`DELETE FROM users WHERE id = $1 RETURNING ${publicFields}`, [id]);
+  return rows[0] || null;
 }

@@ -45,6 +45,6 @@ export async function updateService(id, payload) {
 }
 
 export async function deleteService(id) {
-  const result = await pool.query('DELETE FROM services WHERE id = $1', [id]);
-  return result.rowCount > 0;
+  const { rows } = await pool.query('DELETE FROM services WHERE id = $1 RETURNING *', [id]);
+  return rows[0] || null;
 }

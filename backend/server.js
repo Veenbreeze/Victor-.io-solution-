@@ -17,6 +17,7 @@ import adminRoutes from './routes/adminRoutes.js';
 import eventRoutes from './routes/eventRoutes.js';
 
 import { errorHandler, notFoundHandler } from './middleware/errorMiddleware.js';
+import { apiLimiter } from './middleware/rateLimitMiddleware.js';
 import { validateEnv } from './config/env.js';
 import { pool } from './config/db.js';
 
@@ -25,6 +26,10 @@ validateEnv();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 const PORT = Number(process.env.PORT) || 5000;
+
+// Render/Vercel sit behind a reverse proxy; trust the first hop so
+// express-rate-limit and req.ip see the real client address, not the proxy's.
+app.set('trust proxy', 1);
 
 /* =========================
    SECURITY + LOGGING
@@ -85,6 +90,8 @@ app.get('/api/health', async (_req, res) => {
     res.status(503).json({ status: 'degraded', database: 'disconnected', error: err.message });
   }
 });
+
+app.use('/api', apiLimiter);
 
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);

@@ -6,15 +6,15 @@ import {
   getPortfolioItem,
   removePortfolio
 } from '../controllers/portfolioController.js';
-import { authorize, protect } from '../middleware/authMiddleware.js';
+import { protect, requirePermission } from '../middleware/authMiddleware.js';
 import { upload } from '../middleware/uploadMiddleware.js';
 
 const router = Router();
 
 router.get('/', getPortfolio);
 router.get('/:id', getPortfolioItem);
-router.post('/', protect, authorize('admin'), upload.single('image'), addPortfolio);
-router.put('/:id', protect, authorize('admin'), upload.single('image'), editPortfolio);
-router.delete('/:id', protect, authorize('admin'), removePortfolio);
+router.post('/', protect, requirePermission('portfolio.create'), upload.single('image'), addPortfolio);
+router.put('/:id', protect, requirePermission('portfolio.update'), upload.single('image'), editPortfolio);
+router.delete('/:id', protect, requirePermission('portfolio.delete'), removePortfolio);
 
 export default router;

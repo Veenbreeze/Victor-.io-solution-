@@ -1,4 +1,5 @@
 import { createService, deleteService, findServiceById, listServices, updateService } from '../models/serviceModel.js';
+import { recordAudit } from '../models/auditModel.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { cleanString, requiredFields } from '../utils/validators.js';
 
@@ -26,6 +27,14 @@ export const addService = asyncHandler(async (req, res) => {
     is_featured: Boolean(req.body.is_featured)
   });
 
+  await recordAudit({
+    actor: req.user,
+    action: 'CREATE',
+    entityType: 'service',
+    entityId: service.id,
+    entityLabel: service.title
+  });
+
   return res.status(201).json(service);
 });
 
@@ -40,12 +49,31 @@ export const editService = asyncHandler(async (req, res) => {
 
   const updated = await updateService(req.params.id, payload);
   if (!updated) return res.status(404).json({ message: 'Service not found' });
+
+  await recordAudit({
+    actor: req.user,
+    action: 'UPDATE',
+    entityType: 'service',
+    entityId: updated.id,
+    entityLabel: updated.title,
+    changes: payload
+  });
+
   return res.json(updated);
 });
 
 export const removeService = asyncHandler(async (req, res) => {
   const deleted = await deleteService(req.params.id);
   if (!deleted) return res.status(404).json({ message: 'Service not found' });
+
+  await recordAudit({
+    actor: req.user,
+    action: 'DELETE',
+    entityType: 'service',
+    entityId: deleted.id,
+    entityLabel: deleted.title
+  });
+
   return res.json({ message: 'Service deleted successfully' });
 });
 

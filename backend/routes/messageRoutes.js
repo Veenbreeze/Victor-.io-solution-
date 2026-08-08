@@ -1,11 +1,12 @@
 import { Router } from 'express';
-import { getMessages, removeMessage, sendMessage } from '../controllers/messageController.js';
-import { authorize, protect } from '../middleware/authMiddleware.js';
+import { editMessageStatus, getMessages, removeMessage, sendMessage } from '../controllers/messageController.js';
+import { protect, requirePermission } from '../middleware/authMiddleware.js';
 
 const router = Router();
 
 router.post('/contact', sendMessage);
-router.get('/messages', protect, authorize('admin'), getMessages);
-router.delete('/messages/:id', protect, authorize('admin'), removeMessage);
+router.get('/messages', protect, requirePermission('messages.view'), getMessages);
+router.put('/messages/:id/status', protect, requirePermission('messages.update'), editMessageStatus);
+router.delete('/messages/:id', protect, requirePermission('messages.delete'), removeMessage);
 
 export default router;

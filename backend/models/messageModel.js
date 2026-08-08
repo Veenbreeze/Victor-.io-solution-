@@ -16,6 +16,14 @@ export async function listMessages() {
 }
 
 export async function deleteMessage(id) {
-  const result = await pool.query('DELETE FROM messages WHERE id = $1', [id]);
-  return result.rowCount > 0;
+  const { rows } = await pool.query('DELETE FROM messages WHERE id = $1 RETURNING *', [id]);
+  return rows[0] || null;
+}
+
+export async function updateMessageStatus(id, status) {
+  const { rows } = await pool.query(
+    `UPDATE messages SET status = $1, updated_at = NOW() WHERE id = $2 RETURNING *`,
+    [status, id]
+  );
+  return rows[0] || null;
 }

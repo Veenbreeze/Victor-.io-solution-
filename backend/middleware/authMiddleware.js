@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { findUserById } from '../models/userModel.js';
+import { hasPermission } from '../config/permissions.js';
 
 export async function protect(req, res, next) {
   try {
@@ -27,6 +28,15 @@ export async function protect(req, res, next) {
 export function authorize(...roles) {
   return (req, res, next) => {
     if (!req.user || !roles.includes(req.user.role)) {
+      return res.status(403).json({ message: 'You do not have permission for this action' });
+    }
+    return next();
+  };
+}
+
+export function requirePermission(permission) {
+  return (req, res, next) => {
+    if (!req.user || !hasPermission(req.user.role, permission)) {
       return res.status(403).json({ message: 'You do not have permission for this action' });
     }
     return next();

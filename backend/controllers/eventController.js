@@ -6,6 +6,7 @@ import {
   listUpcomingEvents,
   updateEvent
 } from '../models/eventModel.js';
+import { recordAudit } from '../models/auditModel.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { cleanString, requiredFields } from '../utils/validators.js';
 
@@ -56,6 +57,15 @@ export const addEvent = asyncHandler(async (req, res) => {
   if (!payload.starts_at) return res.status(400).json({ message: 'Invalid starts_at date' });
 
   const event = await createEvent(payload);
+
+  await recordAudit({
+    actor: req.user,
+    action: 'CREATE',
+    entityType: 'event',
+    entityId: event.id,
+    entityLabel: event.title
+  });
+
   return res.status(201).json(event);
 });
 
@@ -63,11 +73,30 @@ export const editEvent = asyncHandler(async (req, res) => {
   const payload = normalizeBody(req.body);
   const updated = await updateEvent(req.params.id, payload);
   if (!updated) return res.status(404).json({ message: 'Event not found' });
+
+  await recordAudit({
+    actor: req.user,
+    action: 'UPDATE',
+    entityType: 'event',
+    entityId: updated.id,
+    entityLabel: updated.title,
+    changes: payload
+  });
+
   return res.json(updated);
 });
 
 export const removeEvent = asyncHandler(async (req, res) => {
   const deleted = await deleteEvent(req.params.id);
   if (!deleted) return res.status(404).json({ message: 'Event not found' });
+
+  await recordAudit({
+    actor: req.user,
+    action: 'DELETE',
+    entityType: 'event',
+    entityId: deleted.id,
+    entityLabel: deleted.title
+  });
+
   return res.json({ message: 'Event deleted successfully' });
 });

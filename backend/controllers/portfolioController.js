@@ -5,6 +5,7 @@ import {
   listPortfolio,
   updatePortfolio
 } from '../models/portfolioModel.js';
+import { recordAudit } from '../models/auditModel.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { cleanString, parseJsonArray, requiredFields } from '../utils/validators.js';
 
@@ -30,6 +31,14 @@ export const addPortfolio = asyncHandler(async (req, res) => {
     live_url: cleanString(req.body.live_url)
   });
 
+  await recordAudit({
+    actor: req.user,
+    action: 'CREATE',
+    entityType: 'portfolio',
+    entityId: item.id,
+    entityLabel: item.title
+  });
+
   return res.status(201).json(item);
 });
 
@@ -43,12 +52,31 @@ export const editPortfolio = asyncHandler(async (req, res) => {
 
   const updated = await updatePortfolio(req.params.id, payload);
   if (!updated) return res.status(404).json({ message: 'Portfolio item not found' });
+
+  await recordAudit({
+    actor: req.user,
+    action: 'UPDATE',
+    entityType: 'portfolio',
+    entityId: updated.id,
+    entityLabel: updated.title,
+    changes: payload
+  });
+
   return res.json(updated);
 });
 
 export const removePortfolio = asyncHandler(async (req, res) => {
   const deleted = await deletePortfolio(req.params.id);
   if (!deleted) return res.status(404).json({ message: 'Portfolio item not found' });
+
+  await recordAudit({
+    actor: req.user,
+    action: 'DELETE',
+    entityType: 'portfolio',
+    entityId: deleted.id,
+    entityLabel: deleted.title
+  });
+
   return res.json({ message: 'Portfolio item deleted successfully' });
 });
 

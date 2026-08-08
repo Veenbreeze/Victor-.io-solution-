@@ -1,15 +1,15 @@
 import { Router } from 'express';
 import { editUser, getUser, getUsers, removeUser } from '../controllers/userController.js';
-import { authorize, protect } from '../middleware/authMiddleware.js';
+import { protect, requirePermission } from '../middleware/authMiddleware.js';
 
 const router = Router();
 
 router.use(protect);
 
 router.get('/me', (req, res) => res.json(req.user));
-router.get('/', authorize('admin'), getUsers);
-router.get('/:id', getUser);
-router.put('/:id', authorize('admin'), editUser);
-router.delete('/:id', authorize('admin'), removeUser);
+router.get('/', requirePermission('users.view'), getUsers);
+router.get('/:id', requirePermission('users.view'), getUser);
+router.put('/:id', requirePermission('users.update'), editUser);
+router.delete('/:id', requirePermission('users.delete'), removeUser);
 
 export default router;

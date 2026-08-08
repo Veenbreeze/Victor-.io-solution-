@@ -1,14 +1,17 @@
 import { Router } from 'express';
 import passport from 'passport';
-import { login, register } from '../controllers/authController.js';
+import { forgotPassword, login, register, resetPassword } from '../controllers/authController.js';
 import { googleCallback, githubCallback, oauthFailure } from '../controllers/oauthController.js';
 import { hasGoogleOAuth, hasGitHubOAuth } from '../config/env.js';
+import { authLimiter, passwordResetLimiter } from '../middleware/rateLimitMiddleware.js';
 
 const router = Router();
 
 // Email/Password Authentication
-router.post('/register', register);
-router.post('/login', login);
+router.post('/register', authLimiter, register);
+router.post('/login', authLimiter, login);
+router.post('/forgot-password', passwordResetLimiter, forgotPassword);
+router.post('/reset-password', passwordResetLimiter, resetPassword);
 
 router.get('/providers', (_req, res) => {
   res.json({ google: hasGoogleOAuth(), github: hasGitHubOAuth() });

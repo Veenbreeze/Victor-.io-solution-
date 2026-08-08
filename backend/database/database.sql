@@ -70,6 +70,32 @@ CREATE TABLE IF NOT EXISTS events (
 
 CREATE INDEX IF NOT EXISTS events_active_starts_idx ON events (is_active, starts_at);
 
+CREATE TABLE IF NOT EXISTS audit_logs (
+  id SERIAL PRIMARY KEY,
+  actor_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+  actor_name VARCHAR(120) NOT NULL,
+  action VARCHAR(20) NOT NULL,
+  entity_type VARCHAR(40) NOT NULL,
+  entity_id VARCHAR(40),
+  entity_label VARCHAR(200),
+  changes JSONB,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS audit_logs_created_idx ON audit_logs (created_at DESC);
+
+CREATE TABLE IF NOT EXISTS password_resets (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  otp_hash VARCHAR(255) NOT NULL,
+  expires_at TIMESTAMP NOT NULL,
+  attempts INTEGER DEFAULT 0,
+  used_at TIMESTAMP,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS password_resets_user_idx ON password_resets (user_id);
+
 INSERT INTO services (title, slug, description, icon, price, is_featured) VALUES
   ('Web Development', 'web-development', 'Fast, responsive websites and web apps built for conversion, SEO, and long-term maintainability.', 'Globe2', 'From Tsh. 600,000', TRUE),
   ('System Development', 'system-development', 'Custom operational systems, dashboards, workflow automations, and secure business platforms.', 'ServerCog', 'From Tsh. 1,200,000', TRUE),

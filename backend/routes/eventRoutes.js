@@ -7,15 +7,15 @@ import {
   getUpcomingEvents,
   removeEvent
 } from '../controllers/eventController.js';
-import { authorize, protect } from '../middleware/authMiddleware.js';
+import { protect, requirePermission } from '../middleware/authMiddleware.js';
 
 const router = Router();
 
 router.get('/upcoming', getUpcomingEvents);
 router.get('/', getEvents);
 router.get('/:id', getEvent);
-router.post('/', protect, authorize('admin'), addEvent);
-router.put('/:id', protect, authorize('admin'), editEvent);
-router.delete('/:id', protect, authorize('admin'), removeEvent);
+router.post('/', protect, requirePermission('events.create'), addEvent);
+router.put('/:id', protect, requirePermission('events.update'), editEvent);
+router.delete('/:id', protect, requirePermission('events.delete'), removeEvent);
 
 export default router;

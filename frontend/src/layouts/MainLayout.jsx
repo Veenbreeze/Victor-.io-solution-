@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useTheme } from '../context/ThemeContext.jsx';
 import Footer from '../components/Footer.jsx';
+import WhatsAppWidget from '../components/WhatsAppWidget.jsx';
 
 const navItems = [
   ['Home', '/'],
@@ -25,9 +26,9 @@ function navClass({ isActive }) {
 export default function MainLayout() {
   const [open, setOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
-  const { user, isAuthenticated, isAdmin, logout } = useAuth();
+  const { user, isAuthenticated, isStaff, logout } = useAuth();
 
-  const dashboardPath = isAdmin ? '/admin' : '/dashboard';
+  const dashboardPath = isStaff ? '/admin' : '/dashboard';
 
   return (
     <div className="min-h-screen text-slate-900 dark:text-white" style={{ background: 'var(--clay-bg)' }}>
@@ -145,6 +146,7 @@ export default function MainLayout() {
       </main>
 
       <Footer />
+      <WhatsAppWidget />
     </div>
   );
 }

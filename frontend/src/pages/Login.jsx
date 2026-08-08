@@ -4,6 +4,7 @@ import { ArrowLeft, Eye, EyeOff, LogIn, Mail, Lock } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
 import OAuthButtons from '../components/OAuthButtons.jsx';
 import { getErrorMessage } from '../utils/format.js';
+import { isStaffRole } from '../config/permissions.js';
 
 const oauthErrors = {
   google_not_configured: 'Google login is not enabled on this server.',
@@ -20,6 +21,7 @@ export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams] = useSearchParams();
+  const resetSuccess = location.state?.resetSuccess;
 
   useEffect(() => {
     const errParam = searchParams.get('error');
@@ -31,7 +33,7 @@ export default function Login() {
     setError('');
     try {
       const user = await login(form);
-      const fallback = user.role === 'admin' ? '/admin' : '/dashboard';
+      const fallback = isStaffRole(user.role) ? '/admin' : '/dashboard';
       navigate(location.state?.from?.pathname || fallback, { replace: true });
     } catch (err) {
       setError(getErrorMessage(err));
@@ -46,6 +48,12 @@ export default function Login() {
           Sign in to continue to your workspace.
         </p>
       </header>
+
+      {resetSuccess && (
+        <p className="rounded-xl border border-brand-300/40 bg-brand-50 px-4 py-3 text-sm font-semibold text-brand-700 dark:border-brand-900/40 dark:bg-brand-900/20 dark:text-brand-200">
+          Password updated. Please log in with your new password.
+        </p>
+      )}
 
       <OAuthButtons isLoading={loading} disabled={loading} />
 
@@ -96,6 +104,12 @@ export default function Login() {
               {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
             </button>
           </div>
+          <Link
+            className="mt-1.5 inline-block text-xs font-bold text-brand-700 hover:text-brand-900 dark:text-brand-200 dark:hover:text-white"
+            to="/forgot-password"
+          >
+            Forgot password?
+          </Link>
         </div>
       </div>
 

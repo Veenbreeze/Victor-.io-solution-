@@ -1,5 +1,6 @@
 import { createContext, useContext, useMemo, useState } from 'react';
 import { authService } from '../services/api.js';
+import { hasPermission, isStaffRole } from '../config/permissions.js';
 
 const AuthContext = createContext(null);
 
@@ -80,6 +81,8 @@ export function AuthProvider({ children }) {
       oauthError,
       isAuthenticated: Boolean(token && user),
       isAdmin: user?.role === 'admin',
+      isStaff: isStaffRole(user?.role),
+      can: (permission) => hasPermission(user?.role, permission),
       login,
       register,
       logout,

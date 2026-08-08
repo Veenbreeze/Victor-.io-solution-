@@ -28,7 +28,9 @@ export const authService = {
   register: (payload) => api.post('/auth/register', payload),
   login: (payload) => api.post('/auth/login', payload),
   providers: () => api.get('/auth/providers'),
-  me: () => api.get('/users/me')
+  me: () => api.get('/users/me'),
+  forgotPassword: (email) => api.post('/auth/forgot-password', { email }),
+  resetPassword: (payload) => api.post('/auth/reset-password', payload)
 };
 
 export const serviceService = {
@@ -54,11 +56,14 @@ export const userService = {
 export const messageService = {
   send: (payload) => api.post('/contact', payload),
   list: () => api.get('/messages'),
+  updateStatus: (id, status) => api.put(`/messages/${id}/status`, { status }),
   remove: (id) => api.delete(`/messages/${id}`)
 };
 
 export const adminService = {
-  stats: () => api.get('/admin/stats')
+  stats: () => api.get('/admin/stats'),
+  activity: (limit = 8) => api.get('/admin/activity', { params: { limit } }),
+  auditLogs: (limit = 100) => api.get('/admin/audit-logs', { params: { limit } })
 };
 
 export const eventService = {
