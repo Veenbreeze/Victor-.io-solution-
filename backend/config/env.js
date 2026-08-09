@@ -33,6 +33,12 @@ export function validateEnv() {
         `[env] OAuth providers are partially configured. Missing: ${missingOAuth.join(', ')}. Social login will be disabled for these providers.`
       );
     }
+
+    if (!String(process.env.SMTP_HOST ?? '').trim()) {
+      console.warn(
+        '[env] SMTP_HOST is not set. Password-reset OTP emails will fall back to a disposable Ethereal test inbox and will NOT reach real users. Set SMTP_HOST/SMTP_PORT/SMTP_USER/SMTP_PASS.'
+      );
+    }
   }
 }
 

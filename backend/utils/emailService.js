@@ -67,19 +67,3 @@ export async function sendOtpEmail(to, name, otp) {
     `
   });
 }
-
-export async function sendOAuthOnlyNotice(to, name, provider) {
-  const label = provider === 'google' ? 'Google' : provider === 'github' ? 'GitHub' : 'your social login';
-  return sendMail({
-    to,
-    subject: 'Password reset request — Victor.io Solutions',
-    text: `Hi ${name},\n\nYour account signs in with ${label}, so it doesn't have a password to reset. Please continue signing in with ${label}.`,
-    html: `
-      <div style="font-family:Inter,Arial,sans-serif;max-width:480px;margin:0 auto;color:#0f172a">
-        <p>Hi ${name},</p>
-        <p>Your account signs in with <strong>${label}</strong>, so it doesn't have a password to reset.</p>
-        <p>Please continue signing in with ${label} instead.</p>
-      </div>
-    `
-  });
-}

@@ -9,7 +9,7 @@ import {
   invalidateResetsForUser,
   markResetUsed
 } from '../models/passwordResetModel.js';
-import { sendOAuthOnlyNotice, sendOtpEmail } from '../utils/emailService.js';
+import { sendOtpEmail } from '../utils/emailService.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { cleanString, isEmail, requiredFields } from '../utils/validators.js';
 
@@ -36,7 +36,15 @@ export const register = asyncHandler(async (req, res) => {
   if (password.length < 8) return res.status(400).json({ message: 'Password must be at least 8 characters' });
 
   const existing = await findUserByEmail(email);
-  if (existing) return res.status(409).json({ message: 'Email is already registered' });
+  if (existing) {
+    const message =
+      existing.provider && existing.provider !== 'email'
+        ? `This email is already linked to a ${
+            existing.provider === 'google' ? 'Google' : existing.provider === 'github' ? 'GitHub' : 'social'
+          } account. Sign in with that provider, or use "Forgot password" to set a password for it.`
+        : 'Email is already registered';
+    return res.status(409).json({ message });
+  }
 
   const passwordHash = await bcrypt.hash(password, 12);
   // role is intentionally never taken from the request body: this is a public,
@@ -81,13 +89,9 @@ export const forgotPassword = asyncHandler(async (req, res) => {
   const user = await findUserByEmail(email);
   if (!user) return res.json(GENERIC_RESET_RESPONSE);
 
-  if (!user.password || user.provider !== 'email') {
-    sendOAuthOnlyNotice(user.email, user.name, user.provider).catch((err) =>
-      console.error('Failed to send OAuth-only notice:', err.message)
-    );
-    return res.json(GENERIC_RESET_RESPONSE);
-  }
-
+  // Accounts created or linked via OAuth can still request an OTP here to set
+  // a password — otherwise a user whose Google/GitHub sign-in silently created
+  // an account (e.g. after a redirect failure) would have no way to get in.
   const otp = generateOtp();
   const otpHash = await bcrypt.hash(otp, 10);
   const expiresAt = new Date(Date.now() + OTP_TTL_MINUTES * 60 * 1000);
