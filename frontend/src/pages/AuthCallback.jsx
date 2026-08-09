@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import LoadingSpinner from '../components/LoadingSpinner.jsx';
@@ -16,8 +16,12 @@ export default function AuthCallback() {
   const navigate = useNavigate();
   const { setAuthState } = useAuth();
   const [error, setError] = useState('');
+  const processed = useRef(false);
 
   useEffect(() => {
+    if (processed.current) return;
+    processed.current = true;
+
     const token = searchParams.get('token');
     const userJson = searchParams.get('user');
     const errorParam = searchParams.get('error');

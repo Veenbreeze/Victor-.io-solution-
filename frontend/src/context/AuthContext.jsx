@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 import { authService } from '../services/api.js';
 import { hasPermission, isStaffRole } from '../config/permissions.js';
 
@@ -18,60 +18,69 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(false);
   const [oauthError, setOAuthError] = useState('');
 
-  const persistSession = (payload) => {
+  const persistSession = useCallback((payload) => {
     localStorage.setItem('veenbreeze_token', payload.token);
     localStorage.setItem('veenbreeze_user', JSON.stringify(payload.user));
     setToken(payload.token);
     setUser(payload.user);
-  };
+  }, []);
 
-  const setAuthState = (payload) => {
-    persistSession(payload);
-  };
+  const setAuthState = useCallback(
+    (payload) => {
+      persistSession(payload);
+    },
+    [persistSession]
+  );
 
-  const clearOAuthError = () => {
+  const clearOAuthError = useCallback(() => {
     setOAuthError('');
-  };
+  }, []);
 
-  const login = async (credentials) => {
-    setLoading(true);
-    setOAuthError('');
-    try {
-      const { data } = await authService.login(credentials);
-      persistSession(data);
-      return data.user;
-    } catch (err) {
-      const errorMsg = err.response?.data?.message || 'Login failed';
-      setOAuthError(errorMsg);
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  };
+  const login = useCallback(
+    async (credentials) => {
+      setLoading(true);
+      setOAuthError('');
+      try {
+        const { data } = await authService.login(credentials);
+        persistSession(data);
+        return data.user;
+      } catch (err) {
+        const errorMsg = err.response?.data?.message || 'Login failed';
+        setOAuthError(errorMsg);
+        throw err;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [persistSession]
+  );
 
-  const register = async (payload) => {
-    setLoading(true);
-    setOAuthError('');
-    try {
-      const { data } = await authService.register(payload);
-      persistSession(data);
-      return data.user;
-    } catch (err) {
-      const errorMsg = err.response?.data?.message || 'Registration failed';
-      setOAuthError(errorMsg);
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  };
+  const register = useCallback(
+    async (payload) => {
+      setLoading(true);
+      setOAuthError('');
+      try {
+        const { data } = await authService.register(payload);
+        persistSession(data);
+        return data.user;
+      } catch (err) {
+        const errorMsg = err.response?.data?.message || 'Registration failed';
+        setOAuthError(errorMsg);
+        throw err;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [persistSession]
+  );
 
-  const logout = () => {
+  const logout = useCallback(() => {
     localStorage.removeItem('veenbreeze_token');
     localStorage.removeItem('veenbreeze_user');
     setToken(null);
     setUser(null);
     setOAuthError('');
-  };
+  }, []);
 
   const value = useMemo(
     () => ({
